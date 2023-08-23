@@ -16,8 +16,8 @@ interface LoginFormData {
 }
 
 export const initValues: LoginFormData = {
-  email: 'hello@altence.com',
-  password: 'some-test-pass',
+  email: '',
+  password: '',
 };
 
 export const LoginForm: React.FC = () => {
@@ -63,45 +63,11 @@ export const LoginForm: React.FC = () => {
         >
           <Auth.FormInputPassword placeholder={t('common.password')} />
         </Auth.FormItem>
-        <Auth.ActionsWrapper>
-          <BaseForm.Item name="rememberMe" valuePropName="checked" noStyle>
-            <Auth.FormCheckbox>
-              <S.RememberMeText>{t('login.rememberMe')}</S.RememberMeText>
-            </Auth.FormCheckbox>
-          </BaseForm.Item>
-          <Link to="/auth/forgot-password">
-            <S.ForgotPasswordText>{t('common.forgotPass')}</S.ForgotPasswordText>
-          </Link>
-        </Auth.ActionsWrapper>
         <BaseForm.Item noStyle>
           <Auth.SubmitButton type="primary" htmlType="submit" loading={isLoading}>
             {t('common.login')}
           </Auth.SubmitButton>
         </BaseForm.Item>
-        <BaseForm.Item noStyle>
-          <Auth.SocialButton type="default" htmlType="submit">
-            <Auth.SocialIconWrapper>
-              <GoogleIcon />
-            </Auth.SocialIconWrapper>
-            {t('login.googleLink')}
-          </Auth.SocialButton>
-        </BaseForm.Item>
-        <BaseForm.Item noStyle>
-          <Auth.SocialButton type="default" htmlType="submit">
-            <Auth.SocialIconWrapper>
-              <FacebookIcon />
-            </Auth.SocialIconWrapper>
-            {t('login.facebookLink')}
-          </Auth.SocialButton>
-        </BaseForm.Item>
-        <Auth.FooterWrapper>
-          <Auth.Text>
-            {t('login.noAccount')}{' '}
-            <Link to="/auth/sign-up">
-              <Auth.LinkText>{t('common.here')}</Auth.LinkText>
-            </Link>
-          </Auth.Text>
-        </Auth.FooterWrapper>
       </BaseForm>
     </Auth.FormWrapper>
   );

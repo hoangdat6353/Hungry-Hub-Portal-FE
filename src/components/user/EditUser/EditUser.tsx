@@ -78,19 +78,19 @@ export const EditUserComponent: React.FC = () => {
 
   const fetchUsers = useCallback(() => {
     if (id) {
-      dispatch(doGetUserById(id))
-        .unwrap()
-        .then((response) => {
-          const isAdmin = response.groups.some((e) => e.name === GroupUserEnum.ADMIN);
-          setChecked(isAdmin);
-          setValueForm({
-            email: response.email,
-            enabled: response.enabled,
-            groupName: isAdmin ? GroupUserEnum.ADMIN : GroupUserEnum.USER,
-            password: '',
-          });
-          form.resetFields();
-        });
+      // dispatch(doGetUserById(id))
+      //   .unwrap()
+      //   .then((response) => {
+      //     const isAdmin = response.groups.some((e) => e.name === GroupUserEnum.ADMIN);
+      //     setChecked(isAdmin);
+      //     setValueForm({
+      //       email: response.email,
+      //       enabled: response.enabled,
+      //       groupName: isAdmin ? GroupUserEnum.ADMIN : GroupUserEnum.USER,
+      //       password: '',
+      //     });
+      //     form.resetFields();
+      //   });
     }
   }, [dispatch, id, form]);
 

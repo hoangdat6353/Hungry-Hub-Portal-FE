@@ -1,19 +1,12 @@
 export interface IUserModel {
   id: string;
-  createdTimestamp: number;
   username: string;
-  enabled: boolean;
-  totp: boolean;
-  emailVerified: boolean;
+  role: string;
+  email: string;
   firstName: string;
   lastName: string;
-  email: string;
-  disableableCredentialTypes: string[];
-  requiredActions: string[];
-  notBefore: 0;
-  access: Access;
-  groups: IGroupModel[];
-  sessions: ISessions[];
+  status: boolean;
+  lastLoggedInAt: Date;
 }
 
 export interface IGroupModel {

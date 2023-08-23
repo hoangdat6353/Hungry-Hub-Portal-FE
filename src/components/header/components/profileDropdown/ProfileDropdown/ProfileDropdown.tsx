@@ -20,7 +20,7 @@ export const ProfileDropdown: React.FC = () => {
         </Col>
         {isTablet && (
           <Col>
-            <S.SubText>{t('profile.hi')}</S.SubText>
+            <S.SubText>{'Hi, '}</S.SubText>
             <S.Text>{userInfo?.name || userInfo?.email}</S.Text>
           </Col>
         )}

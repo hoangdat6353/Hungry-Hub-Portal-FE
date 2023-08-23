@@ -34,13 +34,13 @@ const initialState: AuthSlice = {
 
 export const doLogin = createAsyncThunk('auth/doLogin', async (loginPayload: LoginRequest) => {
   return login(loginPayload).then(async (res) => {
-    res.data.accessToken && persistToken(res.data.accessToken);
+    res.data.token && persistToken(res.data.token);
 
-    const userInfo = await decodeToken(res.data.accessToken);
+    const userInfo = await decodeToken(res.data.token);
     userInfo && persistUserInfo(userInfo);
 
     const response: AuthSlice = {
-      token: res.data.accessToken,
+      token: res.data.token,
       userInfo: userInfo,
     };
 

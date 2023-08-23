@@ -2,7 +2,7 @@ import { IUserModel, UpdateUserRequestParams } from '@app/domain/UserModel';
 import { CommonButton } from '@app/components/button/CommonButton/CommonButton';
 import { BasicTable, TableData } from '@app/components/tables/BasicTable/BasicTable';
 import { useAppDispatch, useAppSelector } from '@app/hooks/reduxHooks';
-import { doGetAllUser, doUpdateStatusUser } from '@app/store/slices/userSlice';
+import { doGetAllUsers, doUpdateStatusUser } from '@app/store/slices/userSlice';
 import { Col, Row } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useState } from 'react';
@@ -13,8 +13,6 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { RouterPaths } from '@app/constants/enums/routerPaths';
 import { notificationController } from '@app/controllers/notificationController';
-import { formatTimestampToDate } from '@app/utils/utils';
-import { GroupUserEnum } from '@app/constants/enums/groupUser';
 
 export const UserList: React.FC = () => {
   const { t } = useTranslation();
@@ -40,28 +38,13 @@ export const UserList: React.FC = () => {
       sorter: (a: IUserModel, b: IUserModel) => a.email.localeCompare(b.email),
     },
     {
-      title: t('users.userTable.lastLoginAt'),
-      dataIndex: 'lastLoginAt',
-      key: 'lastLoginAt',
-      render: (_text: string, record: IUserModel) => <Row>{formatTimestampToDate(record.sessions[0]?.lastAccess)}</Row>,
-      sorter: (a: IUserModel, b: IUserModel) => {
-        const lastAccessA = a.sessions[0]?.lastAccess || 0;
-        const lastAccessB = b.sessions[0]?.lastAccess || 0;
-
-        return lastAccessA - lastAccessB;
-      },
-      defaultSortOrder: 'descend',
-      showSorterTooltip: false,
-    },
-    {
       title: t('users.userTable.status'),
       dataIndex: 'enabled',
       key: 'enabled',
-      sorter: (a: IUserModel, b: IUserModel) => Number(a.enabled) - Number(b.enabled),
+      sorter: (a: IUserModel, b: IUserModel) => Number(a.status) - Number(b.status),
       render: (_, record: IUserModel) => (
         <SwitchButtonCommon
-          disabled={record.groups.some((e) => e.name === GroupUserEnum.ADMIN)}
-          isChecked={record.enabled}
+          isChecked={record.status}
           onChange={(status: boolean) => {
             handelUpdateStatusUser(record.id, status);
           }}
@@ -109,7 +92,7 @@ export const UserList: React.FC = () => {
   };
 
   const fetchUsers = useCallback(() => {
-    dispatch(doGetAllUser())
+    dispatch(doGetAllUsers())
       .unwrap()
       .catch((error: any) => {
         setUsersData({

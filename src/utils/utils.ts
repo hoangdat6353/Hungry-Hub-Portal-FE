@@ -8,6 +8,13 @@ import { BaseBadgeProps } from '@app/components/common/BaseBadge/BaseBadge';
 import { currencies } from '@app/constants/config/currencies';
 import { UserInfo } from '@app/domain/UserModel';
 import jwt from 'jsonwebtoken';
+import {
+  ALPHABET_CHARACTER_LOWER_CASE,
+  ALPHABET_CHARACTER_UPPER_CASE,
+  NUMBER,
+  PATTERN_SPECIAL_CHARACTER,
+  SYMBOLS_CHARACTER,
+} from '@app/constants/enums/common';
 
 export const camelize = (string: string): string => {
   return string
@@ -226,4 +233,41 @@ export const formatTimestampToDate = (timestamp: number | string): string => {
 
 export const decodeToken = (token: string): UserInfo => {
   return jwt.decode(token) as UserInfo;
+};
+
+export const copyToClipBoard = async (value: string): Promise<boolean> => {
+  try {
+    await navigator.clipboard.writeText(value);
+
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
+export const generatePassword = (length: number): string => {
+  const lowercase = ALPHABET_CHARACTER_LOWER_CASE;
+  const uppercase = ALPHABET_CHARACTER_UPPER_CASE;
+  const numbers = NUMBER;
+  const symbols = SYMBOLS_CHARACTER;
+
+  const allCharacters = lowercase + uppercase + numbers + symbols;
+
+  let password = '';
+
+  for (let i = 0; i < length; i++) {
+    password += allCharacters.charAt(Math.floor(Math.random() * allCharacters.length));
+  }
+
+  // Double check pasword valid
+  const hasNumber = /\d/.test(password);
+  const hasLowercase = /[a-z]/.test(password);
+  const hasUppercase = /[A-Z]/.test(password);
+  const hasSymbol = PATTERN_SPECIAL_CHARACTER.test(password);
+
+  if (hasNumber && hasLowercase && hasUppercase && hasSymbol) {
+    return password;
+  } else {
+    return generatePassword(length);
+  }
 };

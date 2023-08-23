@@ -1,16 +1,31 @@
-import styled from 'styled-components';
-import { FONT_SIZE, FONT_WEIGHT, media } from '@app/styles/themes/constants';
-import { BaseInput } from '../BaseInput/BaseInput';
-import { BaseSpace } from '../../BaseSpace/BaseSpace';
+import styled, { css } from 'styled-components';
+import { Space as AntSpace, Input } from 'antd';
+import { FONT_SIZE, FONT_WEIGHT } from '@app/styles/themes/constants';
 
-export const SearchInput = styled(BaseInput.Search)`
+const { Search } = Input;
+
+export interface SearchInputProps {
+  prefixIcon?: boolean;
+}
+
+export const SearchInput = styled(Search)<SearchInputProps>`
   & .ant-input-prefix {
     margin: 0.5rem;
   }
 
   & .ant-input-search-button {
-    height: 3.54875rem;
+    height: 2.8rem;
+
+    ${(props) => {
+      if (props.prefixIcon) {
+        return css`
+          height: 3.54875rem;
+        `;
+      }
+    }}
     box-shadow: none;
+    height: 50px;
+    padding-bottom: 11px;
   }
 
   &.ant-input-search-large .ant-input-search-button {
@@ -18,16 +33,17 @@ export const SearchInput = styled(BaseInput.Search)`
   }
 
   & input {
-    font-weight: 600;
+    font-weight: 400;
     background-color: var(--background-color);
 
-    @media only screen and ${media.md} {
-      font-size: 1rem;
+    @media only screen {
+      font-size: 0.9rem;
     }
 
     &::placeholder {
-      font-weight: 500;
+      font-weight: 400;
     }
+    height: 50px;
   }
 
   .ant-input-group-addon {
@@ -48,7 +64,7 @@ export const SearchInput = styled(BaseInput.Search)`
   }
 `;
 
-export const Space = styled(BaseSpace)`
+export const Space = styled(AntSpace)`
   & > .ant-space-item:last-of-type {
     display: flex;
     align-items: center;

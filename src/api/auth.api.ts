@@ -2,6 +2,7 @@ import { HttpService } from './../services/http.service';
 import './mocks/auth.api.mock';
 import { httpApi } from './http.api';
 import { BaseResponse } from '@app/domain/ApiModel';
+import { URL_PATH_USER } from '@app/constants/api';
 
 export interface AuthData {
   email: string;
@@ -34,16 +35,19 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   id: number;
-  accessToken: string;
-  timeToLiveInSeconds: number;
+  token: string;
+  email: string;
+  role: string;
 }
 
 export const login = (loginPayload: LoginRequest): Promise<BaseResponse<LoginResponse>> => {
   const httpService = new HttpService(process.env.REACT_APP_AUTH_BASE_URL);
 
-  return httpService.post<BaseResponse<LoginResponse>>('api/auth/login', { ...loginPayload }).then(({ data }) => {
-    return data;
-  });
+  return httpService
+    .post<BaseResponse<LoginResponse>>(URL_PATH_USER + '/login', { ...loginPayload })
+    .then(({ data }) => {
+      return data;
+    });
 };
 
 export const signUp = (signUpData: SignUpRequest): Promise<undefined> =>

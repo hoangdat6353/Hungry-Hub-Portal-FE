@@ -12,9 +12,9 @@ import {
 import { HttpService } from '@app/services/http.service';
 import { RouterPaths } from '@app/constants/enums/routerPaths';
 
-export const getAllUserByGroup = (groupName: string): Promise<BaseResponse<IUserModel[]>> => {
+export const getAllUsers = (): Promise<BaseResponse<IUserModel[]>> => {
   const httpService = new HttpService(process.env.REACT_APP_AUTH_BASE_URL);
-  const url = URL_PATH_GET_ALL_USER_GROUP.replace('{groupname}', groupName);
+  const url = URL_PATH_USER;
 
   return httpService.get<BaseResponse<IUserModel[]>>(url).then(({ data }) => {
     return data;

@@ -18,8 +18,8 @@ import NftDashboardPage from '@app/pages/DashboardPages/NftDashboardPage';
 import MedicalDashboardPage from '@app/pages/DashboardPages/MedicalDashboardPage';
 import { RouterPaths } from '@app/constants/enums/routerPaths';
 
-//const EditUserComponent = React.lazy(() => import('@app/pages/users/EditUserPage'));
-//const CreateUserComponent = React.lazy(() => import('@app/pages/users/CreateUserPage'));
+const EditUserComponent = React.lazy(() => import('@app/pages/users/EditUserPage'));
+const CreateUserComponent = React.lazy(() => import('@app/pages/users/CreateUserPage'));
 const UserManagementPage = React.lazy(() => import('@app/pages/users/UserManagementPage'));
 
 const NewsFeedPage = React.lazy(() => import('@app/pages/NewsFeedPage'));
@@ -113,8 +113,8 @@ const Pigeons = withLoading(PigeonsMaps);
 
 //User
 const UserList = withLoading(UserManagementPage);
-//const CreateUserPage = withLoading(CreateUserComponent);
-//const EditUserPage = withLoading(EditUserComponent);
+const CreateUserPage = withLoading(CreateUserComponent);
+const EditUserPage = withLoading(EditUserComponent);
 
 const ServerError = withLoading(ServerErrorPage);
 const Error404 = withLoading(Error404Page);
@@ -143,8 +143,8 @@ export const AppRouter: React.FC = () => {
           <Route path={MEDICAL_DASHBOARD_PATH} element={<MedicalDashboard />} />
           <Route path={RouterPaths.USER_MANAGEMENT}>
             <Route path={RouterPaths.LIST} element={<UserList />} />
-            {/* <Route path={RouterPaths.CREATE} element={<CreateUserPage />} />
-            <Route path={`${RouterPaths.EDIT}`} element={<EditUserPage />} /> */}
+            <Route path={RouterPaths.CREATE} element={<CreateUserPage />} />
+            <Route path={`${RouterPaths.EDIT}`} element={<EditUserPage />} />
           </Route>
           <Route path="apps">
             <Route path="feed" element={<NewsFeed />} />

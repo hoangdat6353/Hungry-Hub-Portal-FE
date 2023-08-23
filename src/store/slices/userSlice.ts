@@ -1,5 +1,5 @@
 import { createAction, createAsyncThunk, createSlice, current, PrepareAction } from '@reduxjs/toolkit';
-import { changePassword, createUser, getAllUserByGroup, getUserById, updateUser } from '@app/api/user.api';
+import { changePassword, createUser, getAllUsers, getUserById, updateUser } from '@app/api/user.api';
 import { GroupUserEnum } from '@app/constants/enums/groupUser';
 import { mergeAndDistinct } from '@app/utils/utils';
 import {
@@ -9,6 +9,7 @@ import {
   UpdateUserRequestModel,
   ChangePasswordRequest,
 } from '@app/domain/UserModel';
+import { BasePaginationRequest } from '@app/domain/ApiModel';
 
 export interface UserState {
   users: IUserModel[] | [];
@@ -19,16 +20,13 @@ const initialState: UserState = {
   users: [],
 };
 
-export const doGetAllUser = createAsyncThunk('user/doGetAllUser', async () => {
-  async function getAllUserFromApi() {
-    const responseUser = await getAllUserByGroup(GroupUserEnum.USER);
-    const responseAdmin = await getAllUserByGroup(GroupUserEnum.ADMIN);
+export const doGetAllUsers = createAsyncThunk('user/doGetAllUsers', async () => {
+  return getAllUsers().then((res) => {
+    if (res.data.length != 0) {
+      setUsers(res.data);
+    }
 
-    return [responseUser, responseAdmin];
-  }
-
-  return getAllUserFromApi().then((result) => {
-    return mergeAndDistinct(result[0]?.data, result[1]?.data, 'email');
+    return res.data;
   });
 });
 
@@ -100,7 +98,7 @@ export const usersSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(doGetAllUser.fulfilled, (state, action) => {
+      .addCase(doGetAllUsers.fulfilled, (state, action) => {
         state.users = action.payload;
       })
       .addCase(doUpdateStatusUser.fulfilled, (state, action) => {
@@ -110,7 +108,7 @@ export const usersSlice = createSlice({
 
         if (isFound != -1) {
           const temp = { ...stateData[isFound] };
-          temp.enabled = user.enabled;
+          temp.status = user.status;
           stateData[isFound] = temp;
         }
 

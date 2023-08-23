@@ -1,6 +1,6 @@
 export const URL_PATH_GET_ALL_PROPOSAL = 'api/proposal';
 export const URL_PATH_GET_ALL_USER_GROUP = 'api/user/groups/{groupname}';
-export const URL_PATH_USER = 'api/user';
+export const URL_PATH_USER = 'users';
 export const URL_PATH_UPDATE_USER = 'api/user/{id}';
 export const URL_PATH_CATEGORY = 'api/category';
 export const URL_PATH_SUB_CATEGORY = 'api/category/sub';

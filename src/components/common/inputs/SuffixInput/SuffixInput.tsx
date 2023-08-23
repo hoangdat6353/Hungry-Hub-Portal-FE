@@ -1,12 +1,12 @@
 import React from 'react';
-import { BaseInput, BaseInputProps } from '../BaseInput/BaseInput';
+import { Input, InputProps } from '../Input/Input';
 import * as S from './SuffixInput.styles';
 
-export interface SuffixInputProps extends BaseInputProps {
+export interface SuffixInputProps extends InputProps {
   suffix: React.ReactNode;
-  isOpenSuffix?: boolean;
+  isVisibleSuffix?: boolean;
 }
 
-export const SuffixInput: React.FC<SuffixInputProps> = ({ suffix, isOpenSuffix = true, ...props }) => (
-  <BaseInput suffix={<S.Suffix isOpen={isOpenSuffix}>{suffix}</S.Suffix>} {...props} />
+export const SuffixInput: React.FC<SuffixInputProps> = ({ suffix, isVisibleSuffix = true, ...props }) => (
+  <Input suffix={<S.Suffix isVisible={isVisibleSuffix}>{suffix}</S.Suffix>} {...props} />
 );
