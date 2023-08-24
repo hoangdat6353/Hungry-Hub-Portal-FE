@@ -9,8 +9,13 @@ import {
   TableOutlined,
   UserOutlined,
   BlockOutlined,
+  SettingOutlined,
+  BarsOutlined,
+  FolderOpenOutlined,
+  CoffeeOutlined,
 } from '@ant-design/icons';
 import { ReactComponent as NftIcon } from '@app/assets/icons/nft-icon.svg';
+import { PieChart } from '@app/components/common/charts/PieChart';
 
 export interface SidebarNavigationItem {
   title: string;
@@ -22,17 +27,29 @@ export interface SidebarNavigationItem {
 
 export const sidebarNavigation: SidebarNavigationItem[] = [
   {
-    title: 'common.nft-dashboard',
+    title: 'Thống kê tổng quan',
     key: 'nft-dashboard',
     // TODO use path variable
     url: '/',
-    icon: <NftIcon />,
+    icon: <DashboardOutlined />,
   },
   {
     title: 'Quản lý Người dùng',
     key: 'user-management',
     url: '/user/list',
     icon: <UserOutlined />,
+  },
+  {
+    title: 'Quản lý Món ăn',
+    key: 'product-management',
+    url: '/product/list',
+    icon: <CoffeeOutlined />,
+  },
+  {
+    title: 'Quản lý Danh mục',
+    key: 'category-management',
+    url: '/category/list',
+    icon: <FolderOpenOutlined />,
   },
   // {
   //   title: 'common.apps',

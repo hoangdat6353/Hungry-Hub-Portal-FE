@@ -26,3 +26,7 @@ export enum SorterType {
   descend = 'descend',
   ascend = 'ascend',
 }
+export enum SortType {
+  ASC = 'ASC',
+  DESC = 'DESC',
+}

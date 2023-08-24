@@ -24,6 +24,8 @@ export const Table = styled(AntdTable)`
     min-width: 1.25rem;
     border-radius: 0.1875rem;
     margin-top: 0;
+    visibility: hidden;
+    display: none;
   }
 
   // Override default antd selector
@@ -32,6 +34,8 @@ export const Table = styled(AntdTable)`
     > tr
     > th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before {
     background-color: var(--primary-color);
+    visibility: hidden;
+    display: none;
   }
 
   & .ant-pagination-prev,

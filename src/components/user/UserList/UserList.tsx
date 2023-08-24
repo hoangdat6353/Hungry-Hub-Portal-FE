@@ -36,12 +36,20 @@ export const UserList: React.FC = () => {
       dataIndex: 'email',
       key: 'email',
       sorter: (a: IUserModel, b: IUserModel) => a.email.localeCompare(b.email),
+      showSorterTooltip: false,
     },
     {
-      title: t('users.userTable.status'),
-      dataIndex: 'enabled',
-      key: 'enabled',
+      title: 'Họ tên',
+      dataIndex: 'name',
+      key: 'name',
+      render: (_text, record) => record?.firstName + record?.lastName || '',
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      key: 'status',
       sorter: (a: IUserModel, b: IUserModel) => Number(a.status) - Number(b.status),
+      showSorterTooltip: false,
       render: (_, record: IUserModel) => (
         <SwitchButtonCommon
           isChecked={record.status}
@@ -52,7 +60,7 @@ export const UserList: React.FC = () => {
       ),
     },
     {
-      title: t('users.userTable.action'),
+      title: 'Hành động',
       key: 'action',
       render: (_text: string, record: IUserModel) => (
         <Row>

@@ -18,9 +18,20 @@ import NftDashboardPage from '@app/pages/DashboardPages/NftDashboardPage';
 import MedicalDashboardPage from '@app/pages/DashboardPages/MedicalDashboardPage';
 import { RouterPaths } from '@app/constants/enums/routerPaths';
 
+//User
 const EditUserComponent = React.lazy(() => import('@app/pages/users/EditUserPage'));
 const CreateUserComponent = React.lazy(() => import('@app/pages/users/CreateUserPage'));
 const UserManagementPage = React.lazy(() => import('@app/pages/users/UserManagementPage'));
+
+//Product
+const ProductListPage = React.lazy(() => import('@app/pages/product/ProductListPage'));
+//const ProductCreatePage = React.lazy(() => import('@app/pages/product/ProductCreatePage'));
+//const ProductEditPage = React.lazy(() => import('@app/pages/product/ProductEditPage'));
+
+//Category
+const CategoryListPage = React.lazy(() => import('@app/pages/category/CategoryListPage'));
+//const CreateCategoryComponent = React.lazy(() => import('@app/pages/category/CreateCategoryPage'));
+//const EditCategoryComponent = React.lazy(() => import('@app/pages/category/EditCategoryPage'));
 
 const NewsFeedPage = React.lazy(() => import('@app/pages/NewsFeedPage'));
 const DataTablesPage = React.lazy(() => import('@app/pages/DataTablesPage'));
@@ -116,6 +127,17 @@ const UserList = withLoading(UserManagementPage);
 const CreateUserPage = withLoading(CreateUserComponent);
 const EditUserPage = withLoading(EditUserComponent);
 
+//Product
+const ProductList = withLoading(ProductListPage);
+// const ProductCreate = withLoading(ProductCreatePage);
+// const ProductEdit = withLoading(ProductEditPage);
+
+//Category
+const CategoryList = withLoading(CategoryListPage);
+//const CreateCategoryPage = withLoading(CreateCategoryComponent);
+//const EditCategoryPage = withLoading(EditCategoryComponent);
+//const ConfigCategoryPage = withLoading(ConfigCategoryComponent);
+
 const ServerError = withLoading(ServerErrorPage);
 const Error404 = withLoading(Error404Page);
 
@@ -145,6 +167,17 @@ export const AppRouter: React.FC = () => {
             <Route path={RouterPaths.LIST} element={<UserList />} />
             <Route path={RouterPaths.CREATE} element={<CreateUserPage />} />
             <Route path={`${RouterPaths.EDIT}`} element={<EditUserPage />} />
+          </Route>
+          <Route path={RouterPaths.PRODUCT_MANAGEMENT}>
+            <Route path={RouterPaths.LIST} element={<ProductList />}></Route>
+            {/* <Route path={RouterPaths.CREATE} element={<BenefitCreate />}></Route>
+            <Route path={RouterPaths.EDIT} element={<BenefitEdit />}></Route> */}
+          </Route>
+          <Route path={RouterPaths.CATEGORY_MANAGEMENT}>
+            <Route path={RouterPaths.LIST} element={<CategoryList />} />
+            {/* <Route path={RouterPaths.CREATE_CATEGORY} element={<CreateCategoryPage />} />
+            <Route path={`${RouterPaths.EDIT_CATEGORY}`} element={<EditCategoryPage />} />
+            <Route path={`${RouterPaths.CONFIG_CATEGORY}`} element={<ConfigCategoryPage />} /> */}
           </Route>
           <Route path="apps">
             <Route path="feed" element={<NewsFeed />} />

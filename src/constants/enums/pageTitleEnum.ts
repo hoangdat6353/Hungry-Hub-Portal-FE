@@ -1,7 +1,7 @@
 export enum TitlePage {
   AUDIT = 'Audit Logs Manager',
   PARTNER = 'Partner Manager',
-  PRODUCT = 'Product Manager',
+  PRODUCT = 'Quản lý Món ăn',
   PROPOSAL = 'Proposal Manager',
   INSURER = 'Insurer Manager',
   CATEGORY = 'Category Manager',
@@ -18,7 +18,7 @@ export enum TitlePage {
   WAITING_PERIOD = 'Waiting Period Manager',
   RISK = 'Risk Manager',
   QUESTION = 'Question Manager',
-  USER = 'User Manager',
+  USER = 'Quản lý Người dùng',
   DEFAULT = 'Empty',
 }
 

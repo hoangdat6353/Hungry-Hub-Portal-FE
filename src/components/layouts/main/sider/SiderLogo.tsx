@@ -2,7 +2,7 @@ import React from 'react';
 import * as S from './MainSider/MainSider.styles';
 import { RightOutlined } from '@ant-design/icons';
 import { useResponsive } from 'hooks/useResponsive';
-import logo from 'assets/icon-hungryhub.png';
+import logo from 'assets/logo.svg';
 import logoDark from 'assets/logo-dark.png';
 import { useAppSelector } from '@app/hooks/reduxHooks';
 
