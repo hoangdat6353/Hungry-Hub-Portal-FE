@@ -36,7 +36,7 @@ export const LoginForm: React.FC = () => {
 
     dispatch(doLogin(requestParams))
       .unwrap()
-      .then(() => console.log('Success'))
+      .then(() => navigate('/'))
       .catch((err) => {
         notificationController.error({ message: err.message });
         setLoading(false);
