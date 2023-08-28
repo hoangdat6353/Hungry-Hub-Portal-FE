@@ -17,7 +17,7 @@ const MedicalDashboardPage: React.FC = () => {
 
   const desktopLayout = (
     <BaseRow>
-      <S.LeftSideCol xl={16} xxl={17} id="desktop-content">
+      {/* <S.LeftSideCol xl={16} xxl={17} id="desktop-content">
         <BaseRow gutter={[60, 60]}>
           <BaseCol span={24}>
             <TrendingCreators />
@@ -35,7 +35,7 @@ const MedicalDashboardPage: React.FC = () => {
             <RecentActivity />
           </BaseCol>
         </BaseRow>
-      </S.LeftSideCol>
+      </S.LeftSideCol> */}
 
       <S.RightSideCol xl={8} xxl={7}>
         <div id="balance">
@@ -67,9 +67,7 @@ const MedicalDashboardPage: React.FC = () => {
         <TrendingCollections />
       </BaseCol>
 
-      <BaseCol span={24}>
-        <RecentActivity />
-      </BaseCol>
+      <BaseCol span={24}>{/* <RecentActivity /> */}</BaseCol>
     </BaseRow>
   );
 
