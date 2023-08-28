@@ -18,7 +18,3 @@ export const ButtonSection = styled.div`
     margin-left: 8px;
   }
 `;
-
-export const CreateButton = styled.div`
-  margin-bottom: 1.25rem;
-`;

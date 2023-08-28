@@ -18,7 +18,7 @@ const App: React.FC = () => {
   const { language } = useLanguage();
   const theme = useAppSelector((state) => state.theme.theme);
 
-  usePWA();
+  //usePWA();
 
   useAutoNightMode();
 

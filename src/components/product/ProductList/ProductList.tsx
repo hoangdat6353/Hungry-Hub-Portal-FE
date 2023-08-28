@@ -12,8 +12,14 @@ import { CommonButton } from '@app/components/button/CommonButton/CommonButton';
 import { notificationController } from '@app/controllers/notificationController';
 import { RouterPaths } from '@app/constants/enums/routerPaths';
 import { useNavigate } from 'react-router-dom';
-import { ProductQueryParams, ProductSortBy, ProductStatus, IProductModel } from '@app/domain/ProductModel';
-import { doGetAllProducts } from '@app/store/slices/productSlice';
+import {
+  ProductQueryParams,
+  ProductSortBy,
+  ProductStatus,
+  IProductModel,
+  UpdateProductStatusRequest,
+} from '@app/domain/ProductModel';
+import { doDeleteProduct, doGetAllProducts, doUpdateProductStatus } from '@app/store/slices/productSlice';
 
 export const ProductList: React.FC = () => {
   const products = useAppSelector((state) => state?.product?.products);
@@ -27,24 +33,39 @@ export const ProductList: React.FC = () => {
     loading: true,
   });
 
-  const handelUpdateStatusUser = (id: string, isBestSeller: boolean, isPopular: boolean) => {
-    // const requestParam: UpdateUserRequestParams = {
-    //   id: id,
-    //   enabled: isBestSeller,
-    // };
-    // dispatch(doUpdateStatusUser(requestParam))
-    //   .unwrap()
-    //   .then(() => {
-    //     notificationController.success({ message: t('common.successfully') });
-    //   })
-    //   .catch((err: any) => {
-    //     notificationController.error({ message: err.message });
-    //   });
+  const handleUpdateStatusProduct = (id: string, isBestSeller: boolean, isPopular: boolean) => {
+    const requestParam: UpdateProductStatusRequest = {
+      id: id,
+      isBestSeller: isBestSeller,
+      isPopular: isPopular,
+    };
+    dispatch(doUpdateProductStatus(requestParam))
+      .unwrap()
+      .then((res) => {
+        notificationController.success({ message: 'Cập nhật trạng thái thành công' });
+        setProductData({
+          ...productsData,
+          data: productsData.data?.map((item) => {
+            if (item.id === res.id) {
+              return {
+                ...item,
+                isBestSeller: isBestSeller,
+                isPopular: isPopular,
+              };
+            }
+
+            return item;
+          }),
+        });
+      })
+      .catch((err: any) => {
+        notificationController.error({ message: err.message });
+      });
   };
 
-  const handelEditUser = (id: string) => {
+  const handleEditProduct = (id: string) => {
     const path = `${
-      RouterPaths.PATH + RouterPaths.USER_MANAGEMENT + RouterPaths.PATH + RouterPaths.EDIT.replace(':id', id)
+      RouterPaths.PATH + RouterPaths.PRODUCT_MANAGEMENT + RouterPaths.PATH + RouterPaths.EDIT.replace(':id', id)
     }`;
     navigate(path);
   };
@@ -87,14 +108,14 @@ export const ProductList: React.FC = () => {
   };
 
   const handleDeleteRow = (id: string) => {
-    // dispatch(doDeleteBenefit(id))
-    //   .unwrap()
-    //   .then(() => {
-    //     notificationController.success({ message: t('common.successfully') });
-    //   })
-    //   .catch((err: any) => {
-    //     notificationController.error({ message: err.message });
-    //   });
+    dispatch(doDeleteProduct({ id: id }))
+      .unwrap()
+      .then(() => {
+        notificationController.success({ message: 'Xóa món ăn thành công' });
+      })
+      .catch((err: any) => {
+        notificationController.error({ message: err.message });
+      });
   };
 
   const columns: ColumnsType<IProductModel> = [
@@ -124,18 +145,24 @@ export const ProductList: React.FC = () => {
       dataIndex: 'price',
       key: 'price',
       render: (_text) => _text || '',
+      sorter: (a: IProductModel, b: IProductModel) => a.price - b.price,
+      showSorterTooltip: false,
     },
     {
       title: 'Số lượng tồn kho',
       dataIndex: 'quantity',
       key: 'quantity',
       render: (_text) => _text || '',
+      sorter: (a: IProductModel, b: IProductModel) => a.quantity - b.quantity,
+      showSorterTooltip: false,
     },
     {
       title: 'Số lượng đã bán',
       dataIndex: 'sold',
       key: 'sold',
       render: (_text) => _text || '',
+      sorter: (a: IProductModel, b: IProductModel) => a.sold - b.sold,
+      showSorterTooltip: false,
     },
     {
       title: 'Đơn vị',
@@ -153,7 +180,7 @@ export const ProductList: React.FC = () => {
         <SwitchButtonCommon
           isChecked={record.isBestSeller}
           onChange={(status: boolean) => {
-            handelUpdateStatusUser(record.id, status, record.isPopular);
+            handleUpdateStatusProduct(record.id, status, record.isPopular);
           }}
         />
       ),
@@ -168,7 +195,7 @@ export const ProductList: React.FC = () => {
         <SwitchButtonCommon
           isChecked={record.isPopular}
           onChange={(status: boolean) => {
-            handelUpdateStatusUser(record.id, record.isBestSeller, status);
+            handleUpdateStatusProduct(record.id, record.isBestSeller, status);
           }}
         />
       ),
@@ -180,7 +207,7 @@ export const ProductList: React.FC = () => {
         return (
           <Space>
             <S.ButtonSection>
-              <EditOutlined className="edit-icon" onClick={() => handelEditUser(record.id)} />
+              <EditOutlined className="edit-icon" onClick={() => handleEditProduct(record.id)} />
               <DeleteOutlined className="delete-icon" onClick={() => showConfirm(record.id)} />
             </S.ButtonSection>
           </Space>
@@ -194,14 +221,18 @@ export const ProductList: React.FC = () => {
       <Row>
         <Col span={20} />
         <Col span={4}>
-          <CommonButton
-            type="primary"
-            htmlType="default"
-            title={t('common.createNew')}
-            onClick={() => {
-              navigate(`${RouterPaths.PATH + RouterPaths.USER_MANAGEMENT + RouterPaths.PATH + RouterPaths.CREATE}`);
-            }}
-          />
+          <S.ToolbarWrapper>
+            <CommonButton
+              type="primary"
+              htmlType="default"
+              title={t('common.createNew')}
+              onClick={() => {
+                navigate(
+                  `${RouterPaths.PATH + RouterPaths.PRODUCT_MANAGEMENT + RouterPaths.PATH + RouterPaths.CREATE}`,
+                );
+              }}
+            />
+          </S.ToolbarWrapper>
         </Col>
       </Row>
       <S.ToolbarWrapper>

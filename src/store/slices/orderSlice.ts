@@ -1,21 +1,22 @@
 import { createAction, createAsyncThunk, createSlice, current, PrepareAction } from '@reduxjs/toolkit';
 import { IProductModel } from '@app/domain/ProductModel';
-import { ICategoryModel } from '@app/domain/CategoryModel';
 import { getAllCategories } from '@app/api/category.api';
+import { IOrderModel } from '@app/domain/OrderModel';
+import { getAllOrders } from '@app/api/order.api';
 
-export interface CategoryState {
-  categories: ICategoryModel[] | [];
+export interface OrderState {
+  orders: IOrderModel[] | [];
 }
-export const STATE_NAME = 'Categoriess';
+export const STATE_NAME = 'ORDERS';
 
-const initialState: CategoryState = {
-  categories: [],
+const initialState: OrderState = {
+  orders: [],
 };
 
-export const doGetAllCategories = createAsyncThunk('categories/doGetAllCategories', async () => {
-  return getAllCategories().then((res) => {
+export const doGetAllOrders = createAsyncThunk('orders/doGetAllOrders', async () => {
+  return getAllOrders().then((res) => {
     if (res.data.length != 0) {
-      setCategories(res.data);
+      setOrders(res.data);
     }
 
     return res.data;
@@ -63,9 +64,9 @@ export const doGetAllCategories = createAsyncThunk('categories/doGetAllCategorie
 //   });
 // });
 
-export const setCategories = createAction<PrepareAction<IProductModel[]>>('category/setCategories', (newCategories) => {
+export const setOrders = createAction<PrepareAction<IProductModel[]>>('order/setOrders', (newOrders) => {
   return {
-    payload: newCategories,
+    payload: newOrders,
   };
 });
 
@@ -84,13 +85,13 @@ export const setCategories = createAction<PrepareAction<IProductModel[]>>('categ
 //   },
 // );
 
-export const categoriesSlice = createSlice({
+export const ordersSlice = createSlice({
   name: STATE_NAME,
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(doGetAllCategories.fulfilled, (state, action) => {
-      state.categories = action.payload;
+    builder.addCase(doGetAllOrders.fulfilled, (state, action) => {
+      state.orders = action.payload;
     });
     //   .addCase(doUpdateStatusUser.fulfilled, (state, action) => {
     //     const stateData = [...current(state.users)];
@@ -108,4 +109,4 @@ export const categoriesSlice = createSlice({
   },
 });
 
-export default categoriesSlice.reducer;
+export default ordersSlice.reducer;

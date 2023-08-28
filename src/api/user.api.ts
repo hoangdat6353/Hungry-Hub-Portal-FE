@@ -1,4 +1,4 @@
-import { URL_PATH_GET_ALL_USER_GROUP, URL_PATH_UPDATE_USER, URL_PATH_USER } from '@app/constants/api';
+import { URL_PATH_EMPLOYEE, URL_PATH_UPDATE_USER, URL_PATH_USER } from '@app/constants/api';
 import { BaseResponse } from '@app/domain/ApiModel';
 import {
   IUserModel,
@@ -15,6 +15,15 @@ import { RouterPaths } from '@app/constants/enums/routerPaths';
 export const getAllUsers = (): Promise<BaseResponse<IUserModel[]>> => {
   const httpService = new HttpService(process.env.REACT_APP_AUTH_BASE_URL);
   const url = URL_PATH_USER;
+
+  return httpService.get<BaseResponse<IUserModel[]>>(url).then(({ data }) => {
+    return data;
+  });
+};
+
+export const getAllEmployee = (): Promise<BaseResponse<IUserModel[]>> => {
+  const httpService = new HttpService(process.env.REACT_APP_AUTH_BASE_URL);
+  const url = URL_PATH_USER + '/' + URL_PATH_EMPLOYEE;
 
   return httpService.get<BaseResponse<IUserModel[]>>(url).then(({ data }) => {
     return data;

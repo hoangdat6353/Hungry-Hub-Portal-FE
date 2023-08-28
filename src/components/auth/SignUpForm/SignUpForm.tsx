@@ -43,7 +43,7 @@ export const SignUpForm: React.FC = () => {
           message: t('auth.signUpSuccessMessage'),
           description: t('auth.signUpSuccessDescription'),
         });
-        navigate('/auth/login');
+        //navigate('/auth/login');
       })
       .catch((err) => {
         notificationController.error({ message: err.message });

@@ -2,25 +2,25 @@ import { IUserModel, UpdateUserRequestParams } from '@app/domain/UserModel';
 import { CommonButton } from '@app/components/button/CommonButton/CommonButton';
 import { BasicTable, TableData } from '@app/components/tables/BasicTable/BasicTable';
 import { useAppDispatch, useAppSelector } from '@app/hooks/reduxHooks';
-import { doGetAllUsers, doUpdateStatusUser } from '@app/store/slices/userSlice';
+import { doGetAllEmployee, doGetAllUsers, doUpdateStatusUser } from '@app/store/slices/userSlice';
 import { Col, Row } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import * as S from './UserList.styles';
+import * as S from './EmployeeList.styles';
 import { SwitchButtonCommon } from '@app/components/switch/ToggleButton/SwitchButtonCommon';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { RouterPaths } from '@app/constants/enums/routerPaths';
 import { notificationController } from '@app/controllers/notificationController';
 
-export const UserList: React.FC = () => {
+export const EmployeeList: React.FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const users = useAppSelector((state: any) => state.user.users);
-  const [usersDataTable, setUsersData] = useState<TableData<IUserModel>>({
-    data: users,
+  const employee = useAppSelector((state) => state.user.employee);
+  const [employeeData, setEmployeeData] = useState<TableData<IUserModel>>({
+    data: employee,
     loading: true,
   });
 
@@ -43,6 +43,36 @@ export const UserList: React.FC = () => {
       dataIndex: 'name',
       key: 'name',
       render: (_text, record) => record?.firstName + record?.lastName || '',
+    },
+    {
+      title: 'Số điện thoại',
+      dataIndex: 'phone',
+      key: 'phone',
+      render: (_text, record) => record?.phone || '',
+    },
+    {
+      title: 'Ngày tháng năm sinh',
+      dataIndex: 'dateOfBirth',
+      key: 'dateOfBirth',
+      render: (_text, record) => record?.dateOfBirth || '',
+    },
+    {
+      title: 'Số CMND/CCCD',
+      dataIndex: 'nationID',
+      key: 'nationID',
+      render: (_text, record) => record?.nationalID || '',
+    },
+    {
+      title: 'Vị trí',
+      dataIndex: 'position',
+      key: 'position',
+      render: (_text, record) => record?.position || '',
+    },
+    {
+      title: 'Ngày vào làm',
+      dataIndex: 'dateHired',
+      key: 'dateHired',
+      render: (_text, record) => record?.dateHired || '',
     },
     {
       title: 'Trạng thái',
@@ -99,11 +129,11 @@ export const UserList: React.FC = () => {
     navigate(path);
   };
 
-  const fetchUsers = useCallback(() => {
-    dispatch(doGetAllUsers())
+  const fetchEmployee = useCallback(() => {
+    dispatch(doGetAllEmployee())
       .unwrap()
       .catch((error: any) => {
-        setUsersData({
+        setEmployeeData({
           data: [],
           loading: true,
         });
@@ -112,23 +142,33 @@ export const UserList: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+    fetchEmployee();
+  }, [fetchEmployee]);
 
   useEffect(() => {
-    setUsersData({
-      data: users,
-      loading: users.length == 0,
+    setEmployeeData({
+      data: employee,
+      loading: false,
     });
-  }, [users]);
+  }, [employee]);
 
   return (
     <>
       <Row>
         <Col span={20} />
+        <Col span={4}>
+          <CommonButton
+            type="primary"
+            htmlType="default"
+            title={t('common.createNew')}
+            onClick={() => {
+              navigate(`${RouterPaths.PATH + RouterPaths.USER_MANAGEMENT + RouterPaths.PATH + RouterPaths.CREATE}`);
+            }}
+          />
+        </Col>
       </Row>
       <S.ToolbarWrapper>
-        <BasicTable tableData={usersDataTable} columns={columns}></BasicTable>
+        <BasicTable tableData={employeeData} columns={columns}></BasicTable>
       </S.ToolbarWrapper>
     </>
   );

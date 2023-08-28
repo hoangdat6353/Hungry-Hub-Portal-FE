@@ -4,6 +4,10 @@ export interface BaseResponse<T> {
   data: T;
 }
 
+export interface BaseStatusResponse {
+  isSuccess: boolean;
+}
+
 export interface BasePaginationResponse<T> {
   totalPages: number;
   pageSize?: number;

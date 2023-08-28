@@ -29,7 +29,7 @@ export const NewPasswordForm: React.FC = () => {
     dispatch(doSetNewPassword({ newPassword: values.password }))
       .unwrap()
       .then(() => {
-        navigate('/auth/login');
+        //navigate('/auth/login');
         notificationController.success({
           message: t('newPassword.successMessage'),
           description: t('newPassword.successDescription'),

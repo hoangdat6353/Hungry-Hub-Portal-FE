@@ -1,5 +1,5 @@
 import { URL_PATH_GET_ALL_USER_GROUP, URL_PATH_PRODUCT, URL_PATH_UPDATE_USER, URL_PATH_USER } from '@app/constants/api';
-import { BaseResponse } from '@app/domain/ApiModel';
+import { BaseResponse, BaseStatusResponse } from '@app/domain/ApiModel';
 import {
   IUserModel,
   CreateUserRequestModel,
@@ -11,10 +11,18 @@ import {
 } from '@app/domain/UserModel';
 import { HttpService } from '@app/services/http.service';
 import { RouterPaths } from '@app/constants/enums/routerPaths';
-import { IProductModel } from '@app/domain/ProductModel';
+import {
+  CreateProductRequest,
+  CreateProductResponse,
+  DeleteProductResponse,
+  IProductModel,
+  UpdateProductRequest,
+  UpdateProductResponse,
+  UpdateProductStatusRequest,
+} from '@app/domain/ProductModel';
 
 export const getAllProducts = (): Promise<BaseResponse<IProductModel[]>> => {
-  const httpService = new HttpService(process.env.REACT_APP_AUTH_BASE_URL);
+  const httpService = new HttpService(process.env.REACT_APP_BASE_URL);
   const url = URL_PATH_PRODUCT + '/all';
 
   return httpService.get<BaseResponse<IProductModel[]>>(url).then(({ data }) => {
@@ -22,33 +30,61 @@ export const getAllProducts = (): Promise<BaseResponse<IProductModel[]>> => {
   });
 };
 
-// export const createUser = (params: CreateUserRequestModel): Promise<BaseResponse<CreateUserResponseModel>> => {
-//   const httpService = new HttpService(process.env.REACT_APP_AUTH_BASE_URL);
+export const createProduct = (params: CreateProductRequest): Promise<BaseResponse<CreateProductResponse>> => {
+  const httpService = new HttpService(process.env.REACT_APP_BASE_URL);
+  const url = URL_PATH_PRODUCT;
 
-//   return httpService.post<BaseResponse<CreateUserResponseModel>>(URL_PATH_USER, params).then(({ data }) => {
-//     return data;
-//   });
-// };
+  return httpService.post<BaseResponse<CreateProductResponse>>(url, params).then(({ data }) => {
+    return data;
+  });
+};
 
-// export const updateUser = (
-//   params: UpdateUserRequestModel,
-//   id: string,
-// ): Promise<BaseResponse<UpdateUserResponseModel>> => {
-//   const httpService = new HttpService(process.env.REACT_APP_AUTH_BASE_URL);
-//   const url = URL_PATH_UPDATE_USER.replace('{id}', id);
+export const uploadProductImage = (id: string, file: File): Promise<BaseResponse<BaseStatusResponse>> => {
+  const httpService = new HttpService(process.env.REACT_APP_BASE_URL);
+  const formData = new FormData();
+  formData.append('file', file, file.name);
+  const url = URL_PATH_PRODUCT + `/${id}` + '/' + 'upload';
 
-//   return httpService.put<BaseResponse<UpdateUserResponseModel>>(url, params).then(({ data }) => {
-//     return data;
-//   });
-// };
+  return httpService.post<BaseResponse<BaseStatusResponse>>(url, formData).then(({ data }) => {
+    return data;
+  });
+};
 
-// export const getUserById = (id: string): Promise<BaseResponse<IUserModel>> => {
-//   const httpService = new HttpService(process.env.REACT_APP_AUTH_BASE_URL);
+export const getProductById = (id: string): Promise<BaseResponse<IProductModel>> => {
+  const httpService = new HttpService(process.env.REACT_APP_BASE_URL);
 
-//   return httpService.get<BaseResponse<IUserModel>>(`${URL_PATH_USER}/${id}`).then(({ data }) => {
-//     return data;
-//   });
-// };
+  return httpService.get<BaseResponse<IProductModel>>(`${URL_PATH_PRODUCT}/find-by-id/${id}`).then(({ data }) => {
+    return data;
+  });
+};
+
+export const updateProduct = (params: UpdateProductRequest): Promise<BaseResponse<UpdateProductResponse>> => {
+  const httpService = new HttpService(process.env.REACT_APP_BASE_URL);
+  const url = URL_PATH_PRODUCT;
+
+  return httpService.put<BaseResponse<UpdateProductResponse>>(url, params).then(({ data }) => {
+    return data;
+  });
+};
+
+export const updateProductStatus = (
+  params: UpdateProductStatusRequest,
+): Promise<BaseResponse<UpdateProductResponse>> => {
+  const httpService = new HttpService(process.env.REACT_APP_BASE_URL);
+  const url = URL_PATH_PRODUCT + '/' + 'product-status';
+
+  return httpService.put<BaseResponse<UpdateProductResponse>>(url, params).then(({ data }) => {
+    return data;
+  });
+};
+
+export const deleteProductById = (id: string): Promise<BaseResponse<DeleteProductResponse>> => {
+  const httpService = new HttpService(process.env.REACT_APP_BASE_URL);
+
+  return httpService.delete<BaseResponse<DeleteProductResponse>>(`${URL_PATH_PRODUCT}/${id}`).then(({ data }) => {
+    return data;
+  });
+};
 
 // export const changePassword = (
 //   changePasswordRequest: ChangePasswordRequest,

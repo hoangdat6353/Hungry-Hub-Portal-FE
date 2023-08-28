@@ -7,6 +7,7 @@ import { URL_PATH_USER } from '@app/constants/api';
 export interface AuthData {
   email: string;
   password: string;
+  isPortal: boolean;
 }
 
 export interface SignUpRequest {
@@ -31,6 +32,7 @@ export interface NewPasswordData {
 export interface LoginRequest {
   email: string;
   password: string;
+  isPortal: boolean;
 }
 
 export interface LoginResponse {
@@ -43,6 +45,7 @@ export interface LoginResponse {
 export const login = (loginPayload: LoginRequest): Promise<BaseResponse<LoginResponse>> => {
   const httpService = new HttpService(process.env.REACT_APP_AUTH_BASE_URL);
 
+  console.log('LOGIN PAYLOAD HERE:', loginPayload);
   return httpService
     .post<BaseResponse<LoginResponse>>(URL_PATH_USER + '/login', { ...loginPayload })
     .then(({ data }) => {

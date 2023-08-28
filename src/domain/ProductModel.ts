@@ -34,6 +34,47 @@ export interface Category {
   icon?: string;
 }
 
+export interface CreateProductRequest {
+  name: string;
+  slug: string;
+  quantity: number;
+  price: number;
+  description: string;
+  unit: string;
+  isBestSeller: boolean;
+  isPopular: boolean;
+  categoryId: string;
+}
+
+export interface UpdateProductRequest {
+  id: string;
+  name: string;
+  slug: string;
+  quantity: number;
+  price: number;
+  description: string;
+  unit: string;
+  isBestSeller: boolean;
+  isPopular: boolean;
+  categoryId: string;
+}
+
+export interface UpdateProductResponse {
+  id: string;
+  isSuccess: boolean;
+}
+
+export interface UpdateProductStatusRequest {
+  id: string;
+  isBestSeller: boolean;
+  isPopular: boolean;
+}
+
+export interface DeleteProductResponse {
+  id: string;
+  isSuccess: boolean;
+}
+
 export interface ProductQueryParams extends BasePaginationRequest {
   status?: ProductStatus | string;
   sortBy: ProductSortBy;
@@ -55,15 +96,9 @@ export interface ProductDeleteResponseModel {
   isSuccess: boolean;
 }
 
-export interface ProductCreateBody {
-  localizedName: LanguageDataModel;
-  localizedDescription: LanguageDataModel;
-  status: ProductStatus;
-}
-
 export interface CreateProductResponse {
-  status: boolean;
-  Product: IProductModel;
+  isSuccess: boolean;
+  id: string;
 }
 
 export interface UpdateProductBody {

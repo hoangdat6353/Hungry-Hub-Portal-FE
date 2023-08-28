@@ -5,6 +5,7 @@ import themeReducer from '@app/store/slices/themeSlice';
 import pwaReducer from '@app/store/slices/pwaSlice';
 import productReducer from '@app/store/slices/productSlice';
 import categoryReducer from '@app/store/slices/categorySlice';
+import orderReducer from '@app/store/slices/orderSlice';
 
 export default {
   user: userReducer,
@@ -14,4 +15,5 @@ export default {
   pwa: pwaReducer,
   product: productReducer,
   category: categoryReducer,
+  order: orderReducer,
 };

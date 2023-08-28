@@ -285,7 +285,7 @@
     "clickToUpload": "Click to upload",
     "directory": "Upload directory",
     "dragger": "Dragger upload",
-    "dragUpload": "Click or drag file to this area to upload",
+    "dragUpload": "Kéo thả file ảnh của sản phẩm vào đây",
     "failedUpload": "{{name}} file upload failed.",
     "successUpload": "{{name}} file uploaded successfully.",
     "limitList": "Limit List",
@@ -740,7 +740,6 @@
     "radio": "Radio",
     "rate": "Rate",
     "reactSimpleMaps": "React Simple Maps",
-    "requiredField": "This field is required!",
     "resetPassword": "Reset password",
     "result": "Result",
     "save": "Save",
@@ -771,7 +770,7 @@
     "delete": "Delete",
     "accountAdmin": "Admin",
     "dataTables": "Data Table",
-    "requiredField": "Required Field",
+    "requiredField": "Trường này là bắt buộc",
     "notValidEmail": "Not Valid Email",
     "oops": "Oops!",
     "createNew": "Tạo mới",
@@ -1094,7 +1093,7 @@
   "login": {
     "facebookLink": "Continue with Facebook",
     "googleLink": "Continue with Google",
-    "loginInfo": "Enter your email address and password to access admin panel",
+    "loginInfo": "Sử dụng tài khoản quản trị để truy cập vào trang quản trị của Hungry Hub",
     "noAccount": "Don’t have an account? Create one",
     "rememberMe": "Remember me",
     "signupLink": "here"
@@ -1421,7 +1420,7 @@
     "clickToUpload": "Click to upload",
     "directory": "Upload directory",
     "dragger": "Dragger upload",
-    "dragUpload": "Click or drag file to this area to upload",
+    "dragUpload": "Kéo thả file ảnh của sản phẩm vào đây",
     "failedUpload": "{{name}} file upload failed.",
     "successUpload": "{{name}} file uploaded successfully."
   },

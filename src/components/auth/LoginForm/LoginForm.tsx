@@ -5,10 +5,9 @@ import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 import { useAppDispatch } from '@app/hooks/reduxHooks';
 import { doLogin } from '@app/store/slices/authSlice';
 import { notificationController } from '@app/controllers/notificationController';
-import { ReactComponent as FacebookIcon } from '@app/assets/icons/facebook.svg';
-import { ReactComponent as GoogleIcon } from '@app/assets/icons/google.svg';
 import * as S from './LoginForm.styles';
 import * as Auth from '@app/components/layouts/AuthLayout/AuthLayout.styles';
+import { LoginRequest } from '@app/api/auth.api';
 
 interface LoginFormData {
   email: string;
@@ -27,11 +26,17 @@ export const LoginForm: React.FC = () => {
 
   const [isLoading, setLoading] = useState(false);
 
-  const handleSubmit = (values: LoginFormData) => {
+  const handleSubmit = async (values: LoginFormData) => {
     setLoading(true);
-    dispatch(doLogin(values))
+    const requestParams: LoginRequest = {
+      email: values.email,
+      password: values.password,
+      isPortal: true,
+    };
+
+    dispatch(doLogin(requestParams))
       .unwrap()
-      .then(() => navigate('/'))
+      .then(() => console.log('Success'))
       .catch((err) => {
         notificationController.error({ message: err.message });
         setLoading(false);

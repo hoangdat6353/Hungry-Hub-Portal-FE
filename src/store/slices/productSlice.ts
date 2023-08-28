@@ -10,8 +10,20 @@ import {
   ChangePasswordRequest,
 } from '@app/domain/UserModel';
 import { BasePaginationRequest } from '@app/domain/ApiModel';
-import { IProductModel } from '@app/domain/ProductModel';
-import { getAllProducts } from '@app/api/product.api';
+import {
+  CreateProductRequest,
+  IProductModel,
+  UpdateProductRequest,
+  UpdateProductStatusRequest,
+} from '@app/domain/ProductModel';
+import {
+  createProduct,
+  deleteProductById,
+  getAllProducts,
+  getProductById,
+  updateProduct,
+  updateProductStatus,
+} from '@app/api/product.api';
 
 export interface ProductState {
   products: IProductModel[] | [];
@@ -32,44 +44,39 @@ export const doGetAllProducts = createAsyncThunk('product/doGetAllProducts', asy
   });
 });
 
-export const doCreateUser = createAsyncThunk('user/doCreateUser', async (params: CreateUserRequestModel) => {
-  return createUser(params).then((res) => {
+export const doCreateProduct = createAsyncThunk('product/doCreateProduct', async (params: CreateProductRequest) => {
+  return createProduct(params).then((res) => {
     return res.data;
   });
 });
 
-export const doUpdateStatusUser = createAsyncThunk(
-  'user/doUpdateStatusUser',
-  async (value: UpdateUserRequestParams) => {
-    const requestParams: UpdateUserRequestModel = {
-      enabled: value.enabled,
-    };
+export const doGetProductById = createAsyncThunk('product/doGetProductById', async (id: string) => {
+  return getProductById(id).then((response) => {
+    return response.data;
+  });
+});
 
-    return updateUser(requestParams, value.id).then((res) => {
-      updateUserSlice(res.data);
+export const doUpdateProduct = createAsyncThunk('product/doUpdateProduct', async (params: UpdateProductRequest) => {
+  return updateProduct(params).then((res) => {
+    return res.data;
+  });
+});
 
-      return res;
+export const doUpdateProductStatus = createAsyncThunk(
+  'product/doUpdateProductStatus',
+  async (params: UpdateProductStatusRequest) => {
+    return updateProductStatus(params).then((res) => {
+      return res.data;
     });
   },
 );
 
-export const doUpdateUser = createAsyncThunk('user/doUpdateUser', async (value: UpdateUserRequestParams) => {
-  const requestParams: UpdateUserRequestModel = {
-    enabled: value.enabled,
-    password: value.password,
-    groupName: value.groupName,
-  };
-
-  return updateUser(requestParams, value.id).then((res) => {
-    updateUserSlice(res.data);
-
-    return res;
-  });
-});
-
-export const doGetUserById = createAsyncThunk('user/doGetUserById', async (id: string) => {
-  return getUserById(id).then((response) => {
-    return response.data;
+export const doDeleteProduct = createAsyncThunk('product/doDeleteProduct', async ({ id }: { id: string }) => {
+  return deleteProductById(id).then((res) => {
+    if (res.data.isSuccess) {
+      deleteProduct(id);
+    }
+    return id;
   });
 });
 
@@ -79,20 +86,11 @@ export const setProducts = createAction<PrepareAction<IProductModel[]>>('product
   };
 });
 
-export const updateUserSlice = createAction<PrepareAction<IUserModel>>('user/updateUser', (userModify) => {
+export const deleteProduct = createAction<PrepareAction<string>>('product/deleteProduct', (deletedProductId) => {
   return {
-    payload: userModify,
+    payload: deletedProductId,
   };
 });
-
-export const doChangePassword = createAsyncThunk(
-  'user/changePassword',
-  async (changePasswordRequest: ChangePasswordRequest) => {
-    return changePassword(changePasswordRequest).then((res) => {
-      return res;
-    });
-  },
-);
 
 export const productsSlice = createSlice({
   name: STATE_NAME,
@@ -101,6 +99,16 @@ export const productsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(doGetAllProducts.fulfilled, (state, action) => {
       state.products = action.payload;
+    });
+    builder.addCase(doDeleteProduct.fulfilled, (state, action) => {
+      const id = action.payload;
+      const index = state.products.findIndex((product) => product.id === id);
+
+      if (index !== -1) {
+        const updatedProducts = [...state.products.slice(0, index), ...state.products.slice(index + 1)];
+
+        state.products = updatedProducts;
+      }
     });
     //   .addCase(doUpdateStatusUser.fulfilled, (state, action) => {
     //     const stateData = [...current(state.users)];

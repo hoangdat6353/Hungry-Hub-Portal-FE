@@ -1,17 +1,54 @@
 import React, { useEffect, useState } from 'react';
 import * as S from '../Header.styles';
-import { Row } from 'antd';
+import { Button, Row } from 'antd';
 import { ProfileDropdown } from '../components/profileDropdown/ProfileDropdown/ProfileDropdown';
 import * as D from './DesktopHeader.styles';
 import { TitlePage, EnumPage } from '@app/constants/enums/pageTitleEnum';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { CommonButton } from '@app/components/button/CommonButton/CommonButton';
+import { useNavigate } from 'react-router-dom';
+import { RouterPaths } from '@app/constants/enums/routerPaths';
+import { useEffectOnce } from '@app/hooks/customeHooks';
 
 interface DesktopHeaderProps {
   isTwoColumnsLayout: boolean;
 }
 
+enum URL_KEY {
+  EDIT = 'edit',
+  CREATE = 'create',
+}
+enum PAGE_TITLE_FIX {
+  MANAGEMENT = 'Quản lý',
+  CREATE = 'Tạo',
+  EDIT = 'Cập nhật',
+}
+
 export const DesktopHeader: React.FC<DesktopHeaderProps> = ({ isTwoColumnsLayout }) => {
   const [pageTitle, setPageTitle] = useState('');
   const [currentUrl, setCurrentUrl] = useState('');
+  const [isManagementPage, setIsManagementPage] = useState<boolean>(true);
+  const [urlValue, setUrlValue] = useState('');
+  const navigate = useNavigate();
+
+  const getPageTitle = (value: string) => {
+    const IS_EDIT_PAGE = currentUrl.includes(URL_KEY.EDIT);
+    const IS_CREATE_PAGE = currentUrl.includes(URL_KEY.CREATE);
+
+    if (IS_CREATE_PAGE) {
+      setIsManagementPage(false);
+
+      return PAGE_TITLE_FIX.CREATE + ' ' + value;
+    } else if (IS_EDIT_PAGE) {
+      setIsManagementPage(false);
+
+      return PAGE_TITLE_FIX.EDIT + ' ' + value;
+    } else {
+      setIsManagementPage(true);
+
+      return PAGE_TITLE_FIX.MANAGEMENT + ' ' + value;
+    }
+  };
 
   useEffect(() => {
     const url = window.location.href;
@@ -21,69 +58,23 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({ isTwoColumnsLayout
   useEffect(() => {
     const urlParts = currentUrl.split('/');
     const valueUrl = urlParts[3];
-    const IS_EDIT_PAGE = currentUrl.includes('edit');
-    const IS_CREATE_PAGE = currentUrl.includes('create');
+    setUrlValue(valueUrl);
 
     switch (valueUrl) {
-      case EnumPage.AUDIT:
-        setPageTitle(TitlePage.AUDIT);
-        break;
-      case EnumPage.PARTNER:
-        setPageTitle(TitlePage.PARTNER);
-        break;
       case EnumPage.PRODUCT:
-        setPageTitle(TitlePage.PRODUCT);
-        break;
-      case EnumPage.PROPOSAL:
-        setPageTitle(TitlePage.PROPOSAL);
-        break;
-      case EnumPage.INSURER:
-        setPageTitle(TitlePage.INSURER);
+        setPageTitle(getPageTitle(TitlePage.PRODUCT));
         break;
       case EnumPage.CATEGORY:
-        setPageTitle(TitlePage.CATEGORY);
-        break;
-      case EnumPage.CUSTOMER:
-        setPageTitle(TitlePage.CUSTOMER);
-        break;
-      case EnumPage.BENEFIT:
-        setPageTitle(TitlePage.BENEFIT);
-        break;
-      case EnumPage.COVERAGE:
-        setPageTitle(TitlePage.COVERAGE);
-        break;
-      case EnumPage.LIMIT:
-        setPageTitle(TitlePage.LIMIT);
-        break;
-      case EnumPage.CLAUSE:
-        setPageTitle(TitlePage.CLAUSE);
-        break;
-      case EnumPage.DOCUMENT:
-        setPageTitle(TitlePage.DOCUMENT);
-        break;
-      case EnumPage.RELATIONSHIP:
-        if (IS_EDIT_PAGE) {
-          setPageTitle(TitlePage.RELATIONSHIP_EDIT);
-        } else if (IS_CREATE_PAGE) {
-          setPageTitle(TitlePage.RELATIONSHIP_CREATE);
-        } else {
-          setPageTitle(TitlePage.RELATIONSHIP);
-        }
-        break;
-      case EnumPage.DEDUCTIBLE:
-        setPageTitle(TitlePage.DEDUCTIBLE);
-        break;
-      case EnumPage.WAITING_PERIOD:
-        setPageTitle(TitlePage.WAITING_PERIOD);
-        break;
-      case EnumPage.RISK:
-        setPageTitle(TitlePage.RISK);
-        break;
-      case EnumPage.QUESTION:
-        setPageTitle(TitlePage.QUESTION);
+        setPageTitle(getPageTitle(TitlePage.CATEGORY));
         break;
       case EnumPage.USER:
-        setPageTitle(TitlePage.USER);
+        setPageTitle(getPageTitle(TitlePage.USER));
+        break;
+      case EnumPage.ORDER:
+        setPageTitle(getPageTitle(TitlePage.ORDER));
+        break;
+      case EnumPage.EMPLOYEE:
+        setPageTitle(getPageTitle(TitlePage.EMPLOYEE));
         break;
       default:
         setPageTitle(TitlePage.DEFAULT);
@@ -94,6 +85,14 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({ isTwoColumnsLayout
   return (
     <S.ProfileColumn $isTwoColumnsLayout={isTwoColumnsLayout}>
       <Row align="middle" justify="space-between">
+        <Button
+          hidden={isManagementPage}
+          onClick={() => {
+            navigate(RouterPaths.PATH + urlValue + RouterPaths.PATH + RouterPaths.LIST);
+          }}
+        >
+          <ArrowLeftOutlined></ArrowLeftOutlined>
+        </Button>
         <D.Text>{pageTitle}</D.Text>
         <ProfileDropdown />
       </Row>

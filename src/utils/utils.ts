@@ -271,3 +271,17 @@ export const generatePassword = (length: number): string => {
     return generatePassword(length);
   }
 };
+
+export const formatISODate = (isoDate: any) => {
+  const createdAtDate = new Date(isoDate);
+
+  const day = createdAtDate.getDate();
+  const month = createdAtDate.getMonth() + 1; // Months are zero-based, so add 1
+  const year = createdAtDate.getFullYear();
+
+  const hours = createdAtDate.getHours();
+  const minutes = createdAtDate.getMinutes();
+
+  const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}`;
+  return formattedDate;
+};

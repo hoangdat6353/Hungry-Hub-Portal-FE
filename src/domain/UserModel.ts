@@ -7,6 +7,11 @@ export interface IUserModel {
   lastName: string;
   status: boolean;
   lastLoggedInAt: Date;
+  position?: string;
+  dateOfBirth?: string;
+  phone?: string;
+  dateHired?: string;
+  nationalID?: string;
 }
 
 export interface IGroupModel {
@@ -81,6 +86,7 @@ export interface UserInfo {
   family_name: string;
   email: string;
   Object: undefined;
+  role: string;
 }
 
 export interface RealmAccess {

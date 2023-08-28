@@ -1,5 +1,5 @@
 import { createAction, createAsyncThunk, createSlice, current, PrepareAction } from '@reduxjs/toolkit';
-import { changePassword, createUser, getAllUsers, getUserById, updateUser } from '@app/api/user.api';
+import { changePassword, createUser, getAllEmployee, getAllUsers, getUserById, updateUser } from '@app/api/user.api';
 import { GroupUserEnum } from '@app/constants/enums/groupUser';
 import { mergeAndDistinct } from '@app/utils/utils';
 import {
@@ -13,17 +13,29 @@ import { BasePaginationRequest } from '@app/domain/ApiModel';
 
 export interface UserState {
   users: IUserModel[] | [];
+  employee: IUserModel[] | [];
 }
 export const STATE_NAME = 'Users';
 
 const initialState: UserState = {
   users: [],
+  employee: [],
 };
 
 export const doGetAllUsers = createAsyncThunk('user/doGetAllUsers', async () => {
   return getAllUsers().then((res) => {
     if (res.data.length != 0) {
       setUsers(res.data);
+    }
+
+    return res.data;
+  });
+});
+
+export const doGetAllEmployee = createAsyncThunk('user/doGetAllEmployee', async () => {
+  return getAllEmployee().then((res) => {
+    if (res.data.length != 0) {
+      setEmployee(res.data);
     }
 
     return res.data;
@@ -77,6 +89,12 @@ export const setUsers = createAction<PrepareAction<IUserModel[]>>('user/setUser'
   };
 });
 
+export const setEmployee = createAction<PrepareAction<IUserModel[]>>('user/setEmployee', (newEmployee) => {
+  return {
+    payload: newEmployee,
+  };
+});
+
 export const updateUserSlice = createAction<PrepareAction<IUserModel>>('user/updateUser', (userModify) => {
   return {
     payload: userModify,
@@ -100,6 +118,9 @@ export const usersSlice = createSlice({
     builder
       .addCase(doGetAllUsers.fulfilled, (state, action) => {
         state.users = action.payload;
+      })
+      .addCase(doGetAllEmployee.fulfilled, (state, action) => {
+        state.employee = action.payload;
       })
       .addCase(doUpdateStatusUser.fulfilled, (state, action) => {
         const stateData = [...current(state.users)];

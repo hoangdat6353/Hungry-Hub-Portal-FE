@@ -18,7 +18,7 @@ export const FormItem = styled(BaseForm.Item)`
   }
 
   & .ant-form-item-label {
-    width: 4rem;
+    width: 12rem;
     padding: 0;
   }
 
