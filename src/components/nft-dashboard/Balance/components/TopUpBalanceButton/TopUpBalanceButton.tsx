@@ -9,7 +9,7 @@ export const TopUpBalanceButton: React.FC<{ onClick: () => void }> = ({ onClick 
 
   return (
     <S.TopUpButton type={theme === 'dark' ? 'ghost' : 'primary'} block onClick={onClick}>
-      {t('nft.topUpBalance')}
+      {'Thống kê doanh thu'}
     </S.TopUpButton>
   );
 };

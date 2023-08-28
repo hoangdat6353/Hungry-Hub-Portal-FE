@@ -64,9 +64,7 @@ export const Balance: React.FC = () => {
             <BaseCol span={24}>
               <BaseRow gutter={[14, 14]}>
                 <BaseCol span={24}>
-                  <S.TitleBalanceText level={3}>
-                    {getCurrencyPrice(formatNumberWithCommas(balance.USD), CurrencyTypeEnum['USD'])}
-                  </S.TitleBalanceText>
+                  <S.TitleBalanceText level={3}>{'4.236.000 VND'}</S.TitleBalanceText>
                 </BaseCol>
 
                 <BaseCol span={24}>

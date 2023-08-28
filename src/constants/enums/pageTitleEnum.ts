@@ -4,7 +4,7 @@ export enum TitlePage {
   USER = 'Người dùng',
   ORDER = 'Đơn hàng',
   EMPLOYEE = 'Nhân viên',
-  DEFAULT = 'Empty',
+  DEFAULT = 'Thống kê tổng quan',
 }
 
 export enum EnumPage {
@@ -28,5 +28,5 @@ export enum EnumPage {
   CATEGORY = 'category',
   PRODUCT = 'product',
   EMPLOYEE = 'employee',
-  DEFAULT = 'default',
+  DEFAULT = '',
 }

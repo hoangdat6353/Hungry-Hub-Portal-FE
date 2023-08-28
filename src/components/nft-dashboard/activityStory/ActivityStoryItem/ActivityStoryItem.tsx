@@ -41,7 +41,7 @@ export const ActivityStoryItem: React.FC<UserActivity> = ({ image, title, status
               </BaseCol>
 
               <BaseCol span={24}>
-                <S.Text>{getCurrencyPrice(formatNumberWithCommas(usd_value), CurrencyTypeEnum.USD)}</S.Text>
+                <S.Text>{usd_value + ' VND'}</S.Text>
               </BaseCol>
             </BaseRow>
           </BaseCol>

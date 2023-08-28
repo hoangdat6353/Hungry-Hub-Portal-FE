@@ -25,32 +25,32 @@ export const getUserActivities = (): Promise<UserActivity[]> => {
     setTimeout(() => {
       res([
         {
-          image: process.env.REACT_APP_ASSETS_BUCKET + '/lightence-activity/unsplash_t1PQ4fYJu7M_ueosw4.webp',
-          title: 'Cubic#1',
+          image: 'https://res.cloudinary.com/dkg19mmtc/image/upload/v1693232157/banh-burger-day-u_ddhkzg.png',
+          title: 'Bánh burger',
           status: 'sold',
           date: Date.now() - 1000 * 60 * 60 * 24 * 5,
-          usd_value: 240,
+          usd_value: 50000,
         },
         {
-          image: process.env.REACT_APP_ASSETS_BUCKET + '/lightence-activity/unsplash_1rBg5YSi00c_ctycjc.webp',
-          title: 'Ancient Nature',
+          image: 'https://res.cloudinary.com/dkg19mmtc/image/upload/v1693232177/banh-mi-sandwich_bixuxb.png',
+          title: 'Bánh sandwich',
           status: 'added',
           date: Date.now() - 1000 * 60 * 60 * 24 * 22,
-          usd_value: 1360,
+          usd_value: 35000,
         },
         {
-          image: process.env.REACT_APP_ASSETS_BUCKET + '/lightence-activity/unsplash_t55GeRpETn0_s8myd3.webp',
-          title: 'Art of Mind',
+          image: 'https://res.cloudinary.com/dkg19mmtc/image/upload/v1693232398/bo-kho-hat-dua_rdw0hk.png',
+          title: 'Bò kho hạt dưa',
           status: 'booked',
           date: Date.now() - 1000 * 60 * 60 * 24 * 156,
-          usd_value: 1895,
+          usd_value: 65000,
         },
         {
-          image: process.env.REACT_APP_ASSETS_BUCKET + '/lightence-activity/unsplash_geJHvrH-CgA_n6mmkv.webp',
-          title: 'CryptoBox',
+          image: 'https://res.cloudinary.com/dkg19mmtc/image/upload/v1693232404/ba-roi-cuon-banh-trang_kkjnmo.png',
+          title: 'Ba rọi cuốn bánh tráng',
           status: 'sold',
           date: Date.now() - 1000 * 60 * 60 * 24 * 31,
-          usd_value: 3920,
+          usd_value: 52000,
         },
       ]);
     }, 0);
@@ -62,18 +62,18 @@ export const getActivities = (): Promise<Activity[]> => {
     setTimeout(() => {
       res([
         {
-          image: process.env.REACT_APP_ASSETS_BUCKET + '/lightence-activity/unsplash_d2w-_1LJioQ_urzhuj.webp',
-          title: 'Yellow Light',
+          image: 'https://res.cloudinary.com/dkg19mmtc/image/upload/v1693232157/banh-burger-day-u_ddhkzg.png',
+          title: 'Bánh burger',
           status: 'sold',
-          date: Date.now() - 1000 * 60 * 24,
-          owner: '@chingu98',
+          date: Date.now() - 1000 * 60 * 60 * 24 * 5,
+          owner: '@samsam',
         },
         {
-          image: process.env.REACT_APP_ASSETS_BUCKET + '/lightence-activity/unsplash_1rBg5YSi00c_1_mpz3a7.webp',
-          title: 'Cult of Nature',
+          image: 'https://res.cloudinary.com/dkg19mmtc/image/upload/v1693232177/banh-mi-sandwich_bixuxb.png',
+          title: 'Bánh sandwich',
           status: 'added',
-          date: Date.now() - 1000 * 60 * 60 * 2,
-          owner: '@azukaru1X',
+          date: Date.now() - 1000 * 60 * 60 * 24 * 22,
+          owner: '@samsam',
         },
         {
           image: process.env.REACT_APP_ASSETS_BUCKET + '/lightence-activity/unsplash_GfQEdpIkkuw_vid9mb.webp',

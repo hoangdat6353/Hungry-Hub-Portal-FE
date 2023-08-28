@@ -1425,7 +1425,7 @@
     "successUpload": "{{name}} file uploaded successfully."
   },
   "nft": {
-    "yourBalance": "Your Balance",
+    "yourBalance": "Tổng doanh thu",
     "topUpBalance": "Top Up Balance",
     "amount": "Amount",
     "selectCard": "Select card",
