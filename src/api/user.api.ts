@@ -8,9 +8,14 @@ import {
   UpdateUserResponseModel,
   ChangePasswordRequest,
   ChangePasswordResponse,
+  DeleteUserResponse,
+  UpdateEmployeeResponse,
+  UpdateUserStatusRequest,
+  UpdateUserStatusResponse,
 } from '@app/domain/UserModel';
 import { HttpService } from '@app/services/http.service';
 import { RouterPaths } from '@app/constants/enums/routerPaths';
+import { CreateEmployeeRequest, UpdateEmployeeRequest } from '@app/domain/EmployeeModel';
 
 export const getAllUsers = (): Promise<BaseResponse<IUserModel[]>> => {
   const httpService = new HttpService(process.env.REACT_APP_AUTH_BASE_URL);
@@ -38,22 +43,46 @@ export const createUser = (params: CreateUserRequestModel): Promise<BaseResponse
   });
 };
 
-export const updateUser = (
-  params: UpdateUserRequestModel,
-  id: string,
-): Promise<BaseResponse<UpdateUserResponseModel>> => {
+export const createEmployee = (params: CreateEmployeeRequest): Promise<BaseResponse<CreateUserResponseModel>> => {
   const httpService = new HttpService(process.env.REACT_APP_AUTH_BASE_URL);
-  const url = URL_PATH_UPDATE_USER.replace('{id}', id);
 
-  return httpService.put<BaseResponse<UpdateUserResponseModel>>(url, params).then(({ data }) => {
+  return httpService
+    .post<BaseResponse<CreateUserResponseModel>>(URL_PATH_USER + '/employee', params)
+    .then(({ data }) => {
+      return data;
+    });
+};
+
+export const updateUserStatus = (params: UpdateUserStatusRequest): Promise<BaseResponse<UpdateUserStatusResponse>> => {
+  const httpService = new HttpService(process.env.REACT_APP_AUTH_BASE_URL);
+  const url = URL_PATH_USER + '/update/user-status';
+
+  return httpService.put<BaseResponse<UpdateUserStatusResponse>>(url, params).then(({ data }) => {
     return data;
   });
 };
 
-export const getUserById = (id: string): Promise<BaseResponse<IUserModel>> => {
+export const getUserById = (id: string): Promise<IUserModel> => {
   const httpService = new HttpService(process.env.REACT_APP_AUTH_BASE_URL);
 
-  return httpService.get<BaseResponse<IUserModel>>(`${URL_PATH_USER}/${id}`).then(({ data }) => {
+  return httpService.get<IUserModel>(`${URL_PATH_USER}/${id}`).then(({ data }) => {
+    return data;
+  });
+};
+
+export const deleteEmployeeById = (id: string): Promise<BaseResponse<DeleteUserResponse>> => {
+  const httpService = new HttpService(process.env.REACT_APP_BASE_URL);
+
+  return httpService.delete<BaseResponse<DeleteUserResponse>>(`${URL_PATH_USER}/${id}`).then(({ data }) => {
+    return data;
+  });
+};
+
+export const updateEmployee = (params: UpdateEmployeeRequest): Promise<BaseResponse<UpdateEmployeeResponse>> => {
+  const httpService = new HttpService(process.env.REACT_APP_BASE_URL);
+  const url = URL_PATH_USER + '/employee/update-employee';
+
+  return httpService.put<BaseResponse<UpdateEmployeeResponse>>(url, params).then(({ data }) => {
     return data;
   });
 };

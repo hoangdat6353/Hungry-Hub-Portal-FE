@@ -17,6 +17,7 @@ import { withLoading } from '@app/hocs/withLoading.hoc';
 import NftDashboardPage from '@app/pages/DashboardPages/NftDashboardPage';
 import MedicalDashboardPage from '@app/pages/DashboardPages/MedicalDashboardPage';
 import { RouterPaths } from '@app/constants/enums/routerPaths';
+import EditOrderPage from '@app/pages/order/OrderEditPage';
 
 //User
 const EditUserComponent = React.lazy(() => import('@app/pages/users/EditUserPage'));
@@ -25,8 +26,8 @@ const UserManagementPage = React.lazy(() => import('@app/pages/users/UserManagem
 
 //Employee
 const EmployeeManagementPage = React.lazy(() => import('@app/pages/employee/EmployeeListPage'));
-// const EditUserComponent = React.lazy(() => import('@app/pages/users/EditUserPage'));
-// const CreateUserComponent = React.lazy(() => import('@app/pages/users/CreateUserPage'));
+const EditEmployeeComponent = React.lazy(() => import('@app/pages/employee/EmployeeEditPage'));
+const CreateEmployeeComponent = React.lazy(() => import('@app/pages/employee/EmployeeCreatePage'));
 
 //Product
 const ProductListPage = React.lazy(() => import('@app/pages/product/ProductListPage'));
@@ -35,13 +36,13 @@ const ProductEditPage = React.lazy(() => import('@app/pages/product/ProductEditP
 
 //Category
 const CategoryListPage = React.lazy(() => import('@app/pages/category/CategoryListPage'));
-//const CreateCategoryComponent = React.lazy(() => import('@app/pages/category/CreateCategoryPage'));
-//const EditCategoryComponent = React.lazy(() => import('@app/pages/category/EditCategoryPage'));
+const CreateCategoryComponent = React.lazy(() => import('@app/pages/category/CategoryCreatePage'));
+const EditCategoryComponent = React.lazy(() => import('@app/pages/category/CategoryEditPage'));
 
 //Order
 const OrderListPage = React.lazy(() => import('@app/pages/order/OrderListPage'));
 //const CreateCategoryComponent = React.lazy(() => import('@app/pages/category/CreateCategoryPage'));
-//const EditCategoryComponent = React.lazy(() => import('@app/pages/category/EditCategoryPage'));
+const EditOrderComponent = React.lazy(() => import('@app/pages/order/OrderEditPage'));
 
 const NewsFeedPage = React.lazy(() => import('@app/pages/NewsFeedPage'));
 const DataTablesPage = React.lazy(() => import('@app/pages/DataTablesPage'));
@@ -139,8 +140,8 @@ const EditUserPage = withLoading(EditUserComponent);
 
 //Employee
 const EmployeeList = withLoading(EmployeeManagementPage);
-//const CreateUserPage = withLoading(CreateUserComponent);
-//const EditUserPage = withLoading(EditUserComponent);
+const CreateEmployeePage = withLoading(CreateEmployeeComponent);
+const EditEmployeePage = withLoading(EditEmployeeComponent);
 
 //Product
 const ProductList = withLoading(ProductListPage);
@@ -149,12 +150,13 @@ const ProductEdit = withLoading(ProductEditPage);
 
 //Category
 const CategoryList = withLoading(CategoryListPage);
-//const CreateCategoryPage = withLoading(CreateCategoryComponent);
-//const EditCategoryPage = withLoading(EditCategoryComponent);
+const CreateCategoryPage = withLoading(CreateCategoryComponent);
+const EditCategoryPage = withLoading(EditCategoryComponent);
 //const ConfigCategoryPage = withLoading(ConfigCategoryComponent);
 
 //Order
 const OrderList = withLoading(OrderListPage);
+const EditOrder = withLoading(EditOrderPage);
 
 const ServerError = withLoading(ServerErrorPage);
 const Error404 = withLoading(Error404Page);
@@ -188,8 +190,8 @@ export const AppRouter: React.FC = () => {
           </Route>
           <Route path={RouterPaths.EMPLOYEE_MANAGEMENT}>
             <Route path={RouterPaths.LIST} element={<EmployeeList />} />
-            {/* <Route path={RouterPaths.CREATE} element={<CreateUserPage />} />
-            <Route path={`${RouterPaths.EDIT}`} element={<EditUserPage />} /> */}
+            <Route path={RouterPaths.CREATE} element={<CreateEmployeePage />} />
+            <Route path={`${RouterPaths.EDIT}`} element={<EditEmployeePage />} />
           </Route>
           <Route path={RouterPaths.PRODUCT_MANAGEMENT}>
             <Route path={RouterPaths.LIST} element={<ProductList />}></Route>
@@ -198,15 +200,12 @@ export const AppRouter: React.FC = () => {
           </Route>
           <Route path={RouterPaths.CATEGORY_MANAGEMENT}>
             <Route path={RouterPaths.LIST} element={<CategoryList />} />
-            {/* <Route path={RouterPaths.CREATE_CATEGORY} element={<CreateCategoryPage />} />
+            <Route path={RouterPaths.CREATE_CATEGORY} element={<CreateCategoryPage />} />
             <Route path={`${RouterPaths.EDIT_CATEGORY}`} element={<EditCategoryPage />} />
-            <Route path={`${RouterPaths.CONFIG_CATEGORY}`} element={<ConfigCategoryPage />} /> */}
           </Route>
           <Route path={RouterPaths.ORDER_MANAGEMENT}>
             <Route path={RouterPaths.LIST} element={<OrderList />} />
-            {/* <Route path={RouterPaths.CREATE_CATEGORY} element={<CreateCategoryPage />} />
-            <Route path={`${RouterPaths.EDIT_CATEGORY}`} element={<EditCategoryPage />} />
-            <Route path={`${RouterPaths.CONFIG_CATEGORY}`} element={<ConfigCategoryPage />} /> */}
+            <Route path={`${RouterPaths.EDIT}`} element={<EditOrder />} />
           </Route>
           <Route path="apps">
             <Route path="feed" element={<NewsFeed />} />

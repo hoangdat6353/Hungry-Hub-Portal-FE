@@ -93,7 +93,7 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({ isTwoColumnsLayout
         >
           <ArrowLeftOutlined></ArrowLeftOutlined>
         </Button>
-        <D.Text>{pageTitle}</D.Text>
+        <D.Text style={{ fontFamily: 'Arial, sans-serif' }}>{pageTitle}</D.Text>
         <ProfileDropdown />
       </Row>
     </S.ProfileColumn>

@@ -46,7 +46,7 @@ export const OrderList: React.FC = () => {
 
   const handelEditUser = (id: string) => {
     const path = `${
-      RouterPaths.PATH + RouterPaths.USER_MANAGEMENT + RouterPaths.PATH + RouterPaths.EDIT.replace(':id', id)
+      RouterPaths.PATH + RouterPaths.ORDER_MANAGEMENT + RouterPaths.PATH + RouterPaths.EDIT.replace(':id', id)
     }`;
     navigate(path);
   };
@@ -138,6 +138,14 @@ export const OrderList: React.FC = () => {
       dataIndex: 'delivery_time',
       key: 'delivery_time',
       render: (_text, record) => record.delivery_time || '',
+    },
+    {
+      title: 'Trạng thái đơn hàng',
+      dataIndex: 'status',
+      key: 'status',
+      sorter: (a: IOrderModel, b: IOrderModel) => a.status.name.localeCompare(b.status.name),
+      showSorterTooltip: false,
+      render: (_text, record) => record.status.name || '',
     },
     {
       title: 'Hành động',

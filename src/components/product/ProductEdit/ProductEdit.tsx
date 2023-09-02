@@ -69,7 +69,6 @@ export const EditProductComponent: React.FC = () => {
   const [categoryId, setCategoryId] = useState<string>('');
 
   const handleSubmit = (values: EditProductForm) => {
-    console.log('ID HERE:', id);
     setLoading(true);
     const requestParam: UpdateProductRequest = {
       id: id as string,
@@ -159,7 +158,7 @@ export const EditProductComponent: React.FC = () => {
   return (
     <S.Container>
       <S.FormDiv>
-        <BaseForm form={form} layout="vertical" onFinish={handleSubmit} initialValues={formValue}>
+        <BaseForm layout="vertical" onFinish={handleSubmit} form={form} initialValues={formValue}>
           <BaseForm.Item>
             <InputTextField
               name="name"

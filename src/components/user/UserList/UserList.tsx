@@ -1,4 +1,4 @@
-import { IUserModel, UpdateUserRequestParams } from '@app/domain/UserModel';
+import { IUserModel, UpdateUserRequestParams, UpdateUserStatusRequest } from '@app/domain/UserModel';
 import { CommonButton } from '@app/components/button/CommonButton/CommonButton';
 import { BasicTable, TableData } from '@app/components/tables/BasicTable/BasicTable';
 import { useAppDispatch, useAppSelector } from '@app/hooks/reduxHooks';
@@ -42,14 +42,25 @@ export const UserList: React.FC = () => {
       title: 'Họ tên',
       dataIndex: 'name',
       key: 'name',
-      render: (_text, record) => record?.firstName + record?.lastName || '',
+      render: (_text, record) => record?.firstName + record?.lastName || '---',
+    },
+    {
+      title: 'Số điện thoại',
+      dataIndex: 'phone',
+      key: 'phone',
+      render: (_text, record) => record?.phone || '---',
+    },
+    {
+      title: 'Địa chỉ',
+      dataIndex: 'address',
+      key: 'address',
+      render: (_text, record) => record?.address || '---',
     },
     {
       title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
-      sorter: (a: IUserModel, b: IUserModel) => Number(a.status) - Number(b.status),
-      showSorterTooltip: false,
+
       render: (_, record: IUserModel) => (
         <SwitchButtonCommon
           isChecked={record.status}
@@ -59,33 +70,30 @@ export const UserList: React.FC = () => {
         />
       ),
     },
-    {
-      title: 'Hành động',
-      key: 'action',
-      render: (_text: string, record: IUserModel) => (
-        <Row>
-          <S.Cell>
-            <EditOutlined
-              onClick={() => {
-                handelEditUser(record.id);
-              }}
-            />
-            <DeleteOutlined />
-          </S.Cell>
-        </Row>
-      ),
-    },
   ];
 
   const handelUpdateStatusUser = (id: string, value: boolean) => {
-    const requestParam: UpdateUserRequestParams = {
+    const requestParam: UpdateUserStatusRequest = {
       id: id,
-      enabled: value,
+      status: value,
     };
     dispatch(doUpdateStatusUser(requestParam))
       .unwrap()
-      .then(() => {
-        notificationController.success({ message: t('common.successfully') });
+      .then((res) => {
+        notificationController.success({ message: 'Cập nhật trạng thái thành công' });
+        setUsersData({
+          ...usersDataTable,
+          data: usersDataTable.data?.map((item) => {
+            if (item.id === res.id) {
+              return {
+                ...item,
+                status: value,
+              };
+            }
+
+            return item;
+          }),
+        });
       })
       .catch((err: any) => {
         notificationController.error({ message: err.message });

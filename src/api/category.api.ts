@@ -5,20 +5,17 @@ import {
   URL_PATH_UPDATE_USER,
   URL_PATH_USER,
 } from '@app/constants/api';
-import { BaseResponse } from '@app/domain/ApiModel';
-import {
-  IUserModel,
-  CreateUserRequestModel,
-  CreateUserResponseModel,
-  UpdateUserRequestModel,
-  UpdateUserResponseModel,
-  ChangePasswordRequest,
-  ChangePasswordResponse,
-} from '@app/domain/UserModel';
+import { BaseResponse, BaseStatusResponse } from '@app/domain/ApiModel';
 import { HttpService } from '@app/services/http.service';
-import { RouterPaths } from '@app/constants/enums/routerPaths';
-import { IProductModel } from '@app/domain/ProductModel';
-import { ICategoryModel } from '@app/domain/CategoryModel';
+
+import {
+  CreateCategoryRequest,
+  CreateCategoryResponse,
+  DeleteCategoryResponse,
+  ICategoryModel,
+  UpdateCategoryRequest,
+  UpdateCategoryResponse,
+} from '@app/domain/CategoryModel';
 
 export const getAllCategories = (): Promise<BaseResponse<ICategoryModel[]>> => {
   const httpService = new HttpService(process.env.REACT_APP_AUTH_BASE_URL);
@@ -29,45 +26,47 @@ export const getAllCategories = (): Promise<BaseResponse<ICategoryModel[]>> => {
   });
 };
 
-// export const createUser = (params: CreateUserRequestModel): Promise<BaseResponse<CreateUserResponseModel>> => {
-//   const httpService = new HttpService(process.env.REACT_APP_AUTH_BASE_URL);
+export const createCategory = (params: CreateCategoryRequest): Promise<BaseResponse<CreateCategoryResponse>> => {
+  const httpService = new HttpService(process.env.REACT_APP_BASE_URL);
+  const url = URL_PATH_CATEGORY;
 
-//   return httpService.post<BaseResponse<CreateUserResponseModel>>(URL_PATH_USER, params).then(({ data }) => {
-//     return data;
-//   });
-// };
+  return httpService.post<BaseResponse<CreateCategoryResponse>>(url, params).then(({ data }) => {
+    return data;
+  });
+};
 
-// export const updateUser = (
-//   params: UpdateUserRequestModel,
-//   id: string,
-// ): Promise<BaseResponse<UpdateUserResponseModel>> => {
-//   const httpService = new HttpService(process.env.REACT_APP_AUTH_BASE_URL);
-//   const url = URL_PATH_UPDATE_USER.replace('{id}', id);
+export const uploadCategoryImage = (id: string, file: File): Promise<BaseResponse<BaseStatusResponse>> => {
+  const httpService = new HttpService(process.env.REACT_APP_BASE_URL);
+  const formData = new FormData();
+  formData.append('file', file, file.name);
+  const url = URL_PATH_CATEGORY + `/${id}` + '/' + 'upload';
 
-//   return httpService.put<BaseResponse<UpdateUserResponseModel>>(url, params).then(({ data }) => {
-//     return data;
-//   });
-// };
+  return httpService.post<BaseResponse<BaseStatusResponse>>(url, formData).then(({ data }) => {
+    return data;
+  });
+};
 
-// export const getUserById = (id: string): Promise<BaseResponse<IUserModel>> => {
-//   const httpService = new HttpService(process.env.REACT_APP_AUTH_BASE_URL);
+export const deleteCategoryById = (id: string): Promise<BaseResponse<DeleteCategoryResponse>> => {
+  const httpService = new HttpService(process.env.REACT_APP_BASE_URL);
 
-//   return httpService.get<BaseResponse<IUserModel>>(`${URL_PATH_USER}/${id}`).then(({ data }) => {
-//     return data;
-//   });
-// };
+  return httpService.delete<BaseResponse<DeleteCategoryResponse>>(`${URL_PATH_CATEGORY}/${id}`).then(({ data }) => {
+    return data;
+  });
+};
 
-// export const changePassword = (
-//   changePasswordRequest: ChangePasswordRequest,
-// ): Promise<BaseResponse<ChangePasswordResponse>> => {
-//   const httpService = new HttpService(process.env.REACT_APP_AUTH_BASE_URL);
+export const updateCategory = (params: UpdateCategoryRequest): Promise<BaseResponse<UpdateCategoryResponse>> => {
+  const httpService = new HttpService(process.env.REACT_APP_BASE_URL);
+  const url = URL_PATH_CATEGORY;
 
-//   return httpService
-//     .post<BaseResponse<ChangePasswordResponse>>(
-//       URL_PATH_USER + RouterPaths.PATH + RouterPaths.CHANGE_PASSWORD,
-//       changePasswordRequest,
-//     )
-//     .then(({ data }) => {
-//       return data;
-//     });
-// };
+  return httpService.put<BaseResponse<UpdateCategoryResponse>>(url, params).then(({ data }) => {
+    return data;
+  });
+};
+
+export const getCategoryById = (id: string): Promise<BaseResponse<ICategoryModel>> => {
+  const httpService = new HttpService(process.env.REACT_APP_BASE_URL);
+
+  return httpService.get<BaseResponse<ICategoryModel>>(`${URL_PATH_CATEGORY}/find-by-id/${id}`).then(({ data }) => {
+    return data;
+  });
+};

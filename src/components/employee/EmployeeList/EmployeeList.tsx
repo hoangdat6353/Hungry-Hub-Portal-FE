@@ -1,18 +1,19 @@
-import { IUserModel, UpdateUserRequestParams } from '@app/domain/UserModel';
+import { IUserModel, UpdateUserRequestParams, UpdateUserStatusRequest } from '@app/domain/UserModel';
 import { CommonButton } from '@app/components/button/CommonButton/CommonButton';
 import { BasicTable, TableData } from '@app/components/tables/BasicTable/BasicTable';
 import { useAppDispatch, useAppSelector } from '@app/hooks/reduxHooks';
-import { doGetAllEmployee, doGetAllUsers, doUpdateStatusUser } from '@app/store/slices/userSlice';
+import { doDeleteEmployee, doGetAllEmployee, doGetAllUsers, doUpdateStatusUser } from '@app/store/slices/userSlice';
 import { Col, Row } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as S from './EmployeeList.styles';
 import { SwitchButtonCommon } from '@app/components/switch/ToggleButton/SwitchButtonCommon';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { RouterPaths } from '@app/constants/enums/routerPaths';
 import { notificationController } from '@app/controllers/notificationController';
+import confirm from 'antd/lib/modal/confirm';
 
 export const EmployeeList: React.FC = () => {
   const { t } = useTranslation();
@@ -23,6 +24,31 @@ export const EmployeeList: React.FC = () => {
     data: employee,
     loading: true,
   });
+
+  const showConfirm = (id: string) => {
+    confirm({
+      title: 'Xóa nhân viên',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Thao tác này sẽ xóa nhân viên khỏi hệ thống. Bạn có chắc về hành động này?',
+      okText: 'Có',
+      cancelText: 'Hủy',
+      centered: true,
+      onOk: () => {
+        handleDeleteRow(id);
+      },
+    });
+  };
+
+  const handleDeleteRow = (id: string) => {
+    dispatch(doDeleteEmployee({ id: id }))
+      .unwrap()
+      .then(() => {
+        notificationController.success({ message: 'Xóa nhân viên thành công' });
+      })
+      .catch((err: any) => {
+        notificationController.error({ message: err.message });
+      });
+  };
 
   const columns: ColumnsType<IUserModel> = [
     {
@@ -42,7 +68,7 @@ export const EmployeeList: React.FC = () => {
       title: 'Họ tên',
       dataIndex: 'name',
       key: 'name',
-      render: (_text, record) => record?.firstName + record?.lastName || '',
+      render: (_text, record) => record?.username || '',
     },
     {
       title: 'Số điện thoại',
@@ -100,7 +126,7 @@ export const EmployeeList: React.FC = () => {
                 handelEditUser(record.id);
               }}
             />
-            <DeleteOutlined />
+            <DeleteOutlined className="delete-icon" onClick={() => showConfirm(record.id)} />
           </S.Cell>
         </Row>
       ),
@@ -108,9 +134,9 @@ export const EmployeeList: React.FC = () => {
   ];
 
   const handelUpdateStatusUser = (id: string, value: boolean) => {
-    const requestParam: UpdateUserRequestParams = {
+    const requestParam: UpdateUserStatusRequest = {
       id: id,
-      enabled: value,
+      status: value,
     };
     dispatch(doUpdateStatusUser(requestParam))
       .unwrap()
@@ -124,7 +150,7 @@ export const EmployeeList: React.FC = () => {
 
   const handelEditUser = (id: string) => {
     const path = `${
-      RouterPaths.PATH + RouterPaths.USER_MANAGEMENT + RouterPaths.PATH + RouterPaths.EDIT.replace(':id', id)
+      RouterPaths.PATH + RouterPaths.EMPLOYEE_MANAGEMENT + RouterPaths.PATH + RouterPaths.EDIT.replace(':id', id)
     }`;
     navigate(path);
   };
@@ -162,7 +188,7 @@ export const EmployeeList: React.FC = () => {
             htmlType="default"
             title={t('common.createNew')}
             onClick={() => {
-              navigate(`${RouterPaths.PATH + RouterPaths.USER_MANAGEMENT + RouterPaths.PATH + RouterPaths.CREATE}`);
+              navigate(`${RouterPaths.PATH + RouterPaths.EMPLOYEE_MANAGEMENT + RouterPaths.PATH + RouterPaths.CREATE}`);
             }}
           />
         </Col>

@@ -19,18 +19,35 @@ export interface IOrderModel {
   shipping_address: IShippingAddress;
   delivery_time: string;
   products: ProductOrder[];
+  status: StatusOrder;
 }
 
 export interface IShippingAddress {
   shipping_address: string;
 }
 
+export interface StatusOrder {
+  id: string;
+  name: string;
+  serial: number;
+  color: string;
+}
 export interface ProductOrder {
   id: string;
   name: string;
   quantity: number;
   price: number;
   image: string;
+}
+
+export interface UpdateOrderStatusRequest {
+  id: string;
+  statusId: string;
+}
+
+export interface UpdateOrderStatusResponse {
+  id: string;
+  isSuccess: boolean;
 }
 
 export interface OrderQueryParams extends BasePaginationRequest {

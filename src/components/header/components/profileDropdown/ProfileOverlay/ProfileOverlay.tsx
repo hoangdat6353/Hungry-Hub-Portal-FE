@@ -12,13 +12,7 @@ export const ProfileOverlay: React.FC = ({ ...props }) => {
     <DropdownMenu selectable={false} {...props}>
       <S.MenuItem key={0}>
         <S.Text>
-          <Link to={RouterPaths.PATH + RouterPaths.PROFILE}>{t('profile.title')}</Link>
-        </S.Text>
-      </S.MenuItem>
-      <S.ItemsDivider />
-      <S.MenuItem key={1}>
-        <S.Text>
-          <Link to={RouterPaths.LOGOUT}>{t('header.logout')}</Link>
+          <Link to={RouterPaths.LOGOUT}>{'Đăng xuất'}</Link>
         </S.Text>
       </S.MenuItem>
     </DropdownMenu>

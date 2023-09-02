@@ -32,23 +32,27 @@ export interface CategoryUpdateBody {
 }
 
 export interface UpdateCategoryResponse {
-  status: boolean;
-  Category: ICategoryModel;
+  id: string;
+  isSuccess: boolean;
 }
 
 export interface CategoryDeleteResponseModel {
   isSuccess: boolean;
 }
+export interface CreateCategoryRequest {
+  name: string;
+  slug: string;
+}
 
-export interface CategoryCreateBody {
-  localizedName: LanguageDataModel;
-  localizedDescription: LanguageDataModel;
-  status: CategoryStatus;
+export interface UpdateCategoryRequest {
+  id: string;
+  name: string;
+  slug: string;
 }
 
 export interface CreateCategoryResponse {
-  status: boolean;
-  Category: ICategoryModel;
+  isSuccess: boolean;
+  id: string;
 }
 
 export interface UpdateCategoryBody {
@@ -60,4 +64,20 @@ export interface CategorySetupForm {
   localizedName: string;
   localizedDescription: string;
   status?: boolean;
+}
+
+export interface DeleteCategoryResponse {
+  id: string;
+  isSuccess: boolean;
+}
+
+export interface UpdateCategoryRequest {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+export interface UpdateCategoryResponse {
+  status: boolean;
+  Product: ICategoryModel;
 }

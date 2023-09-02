@@ -1,15 +1,5 @@
-import { createAction, createAsyncThunk, createSlice, current, PrepareAction } from '@reduxjs/toolkit';
-import { changePassword, createUser, getAllUsers, getUserById, updateUser } from '@app/api/user.api';
-import { GroupUserEnum } from '@app/constants/enums/groupUser';
-import { mergeAndDistinct } from '@app/utils/utils';
-import {
-  IUserModel,
-  CreateUserRequestModel,
-  UpdateUserRequestParams,
-  UpdateUserRequestModel,
-  ChangePasswordRequest,
-} from '@app/domain/UserModel';
-import { BasePaginationRequest } from '@app/domain/ApiModel';
+import { createAction, createAsyncThunk, createSlice, PrepareAction } from '@reduxjs/toolkit';
+
 import {
   CreateProductRequest,
   IProductModel,

@@ -771,7 +771,7 @@
     "accountAdmin": "Admin",
     "dataTables": "Data Table",
     "requiredField": "Trường này là bắt buộc",
-    "notValidEmail": "Not Valid Email",
+    "notValidEmail": "Địa chỉ email không hợp lệ",
     "oops": "Oops!",
     "createNew": "Tạo mới",
     "cancel": "Cancel",

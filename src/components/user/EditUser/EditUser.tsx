@@ -11,7 +11,6 @@ import { RouterPaths } from '@app/constants/enums/routerPaths';
 import { useNavigate, useParams } from 'react-router-dom';
 import { copyToClipBoard, generatePassword } from '@app/utils/utils';
 import { useAppDispatch } from '@app/hooks/reduxHooks';
-import { doGetUserById, doUpdateUser } from '@app/store/slices/userSlice';
 import { GroupUserEnum } from '@app/constants/enums/groupUser';
 import { notificationController } from '@app/controllers/notificationController';
 import { CopyFilled } from '@ant-design/icons';
@@ -50,17 +49,17 @@ export const EditUserComponent: React.FC = () => {
         password: values.password,
       };
 
-      dispatch(doUpdateUser(requestParam))
-        .unwrap()
-        .then(() => {
-          notificationController.success({ message: t('common.successfully') });
+      // dispatch(doUpdateUser(requestParam))
+      //   .unwrap()
+      //   .then(() => {
+      //     notificationController.success({ message: t('common.successfully') });
 
-          navigate(`${RouterPaths.PATH + RouterPaths.USER_MANAGEMENT + RouterPaths.PATH + RouterPaths.LIST}`);
-        })
-        .catch((err) => {
-          notificationController.error({ message: err.message });
-          setLoading(false);
-        });
+      //     navigate(`${RouterPaths.PATH + RouterPaths.USER_MANAGEMENT + RouterPaths.PATH + RouterPaths.LIST}`);
+      //   })
+      //   .catch((err) => {
+      //     notificationController.error({ message: err.message });
+      //     setLoading(false);
+      //   });
     }
   };
 
@@ -141,7 +140,7 @@ export const EditUserComponent: React.FC = () => {
               </Col>
               <Col span={2}>
                 <S.ButtonInput>
-                  <CommonButton type="default" title={<CopyFilled />} onClick={() => handleCopy(formValue.password)} />
+                  {/* <CommonButton type="default" title={<CopyFilled />} onClick={() => handleCopy(formValue.password)} /> */}
                 </S.ButtonInput>
               </Col>
             </Row>

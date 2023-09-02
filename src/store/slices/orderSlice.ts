@@ -1,8 +1,8 @@
 import { createAction, createAsyncThunk, createSlice, current, PrepareAction } from '@reduxjs/toolkit';
 import { IProductModel } from '@app/domain/ProductModel';
 import { getAllCategories } from '@app/api/category.api';
-import { IOrderModel } from '@app/domain/OrderModel';
-import { getAllOrders } from '@app/api/order.api';
+import { IOrderModel, UpdateOrderStatusRequest } from '@app/domain/OrderModel';
+import { getAllOrders, getOrderById, updateOrderStatus } from '@app/api/order.api';
 
 export interface OrderState {
   orders: IOrderModel[] | [];
@@ -22,6 +22,21 @@ export const doGetAllOrders = createAsyncThunk('orders/doGetAllOrders', async ()
     return res.data;
   });
 });
+
+export const doGetOrderById = createAsyncThunk('order/doGetOrderById', async (id: string) => {
+  return getOrderById(id).then((response) => {
+    return response.data;
+  });
+});
+
+export const doUpdateOrderStatus = createAsyncThunk(
+  'order/doUpdateOrderStatus',
+  async (params: UpdateOrderStatusRequest) => {
+    return updateOrderStatus(params).then((res) => {
+      return res.data;
+    });
+  },
+);
 
 // export const doCreateUser = createAsyncThunk('user/doCreateUser', async (params: CreateUserRequestModel) => {
 //   return createUser(params).then((res) => {
@@ -64,7 +79,7 @@ export const doGetAllOrders = createAsyncThunk('orders/doGetAllOrders', async ()
 //   });
 // });
 
-export const setOrders = createAction<PrepareAction<IProductModel[]>>('order/setOrders', (newOrders) => {
+export const setOrders = createAction<PrepareAction<IOrderModel[]>>('order/setOrders', (newOrders) => {
   return {
     payload: newOrders,
   };

@@ -1,7 +1,13 @@
 import { createAction, createAsyncThunk, createSlice, current, PrepareAction } from '@reduxjs/toolkit';
 import { IProductModel } from '@app/domain/ProductModel';
-import { ICategoryModel } from '@app/domain/CategoryModel';
-import { getAllCategories } from '@app/api/category.api';
+import { CreateCategoryRequest, ICategoryModel, UpdateCategoryRequest } from '@app/domain/CategoryModel';
+import {
+  createCategory,
+  deleteCategoryById,
+  getAllCategories,
+  getCategoryById,
+  updateCategory,
+} from '@app/api/category.api';
 
 export interface CategoryState {
   categories: ICategoryModel[] | [];
@@ -18,6 +24,45 @@ export const doGetAllCategories = createAsyncThunk('categories/doGetAllCategorie
       setCategories(res.data);
     }
 
+    return res.data;
+  });
+});
+
+export const doCreateCategory = createAsyncThunk('category/doCreateCategory', async (params: CreateCategoryRequest) => {
+  return createCategory(params).then((res) => {
+    return res.data;
+  });
+});
+
+export const doDeleteCategory = createAsyncThunk('category/doDeleteCategory', async ({ id }: { id: string }) => {
+  return deleteCategoryById(id).then((res) => {
+    if (res.data.isSuccess) {
+      deleteCategory(id);
+    }
+    return id;
+  });
+});
+
+export const setProducts = createAction<PrepareAction<IProductModel[]>>('product/setProduct', (newProduct) => {
+  return {
+    payload: newProduct,
+  };
+});
+
+export const deleteCategory = createAction<PrepareAction<string>>('category/deleteCategory', (deletedCategoryId) => {
+  return {
+    payload: deletedCategoryId,
+  };
+});
+
+export const doGetCategoryById = createAsyncThunk('category/doGetCategoryById', async (id: string) => {
+  return getCategoryById(id).then((response) => {
+    return response.data;
+  });
+});
+
+export const doUpdateCategory = createAsyncThunk('category/doUpdateCategory', async (params: UpdateCategoryRequest) => {
+  return updateCategory(params).then((res) => {
     return res.data;
   });
 });
@@ -63,11 +108,14 @@ export const doGetAllCategories = createAsyncThunk('categories/doGetAllCategorie
 //   });
 // });
 
-export const setCategories = createAction<PrepareAction<IProductModel[]>>('category/setCategories', (newCategories) => {
-  return {
-    payload: newCategories,
-  };
-});
+export const setCategories = createAction<PrepareAction<ICategoryModel[]>>(
+  'category/setCategories',
+  (newCategories) => {
+    return {
+      payload: newCategories,
+    };
+  },
+);
 
 // export const updateUserSlice = createAction<PrepareAction<IUserModel>>('user/updateUser', (userModify) => {
 //   return {
@@ -91,6 +139,16 @@ export const categoriesSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(doGetAllCategories.fulfilled, (state, action) => {
       state.categories = action.payload;
+    });
+    builder.addCase(doDeleteCategory.fulfilled, (state, action) => {
+      const id = action.payload;
+      const index = state.categories.findIndex((product) => product.id === id);
+
+      if (index !== -1) {
+        const updatedcategories = [...state.categories.slice(0, index), ...state.categories.slice(index + 1)];
+
+        state.categories = updatedcategories;
+      }
     });
     //   .addCase(doUpdateStatusUser.fulfilled, (state, action) => {
     //     const stateData = [...current(state.users)];

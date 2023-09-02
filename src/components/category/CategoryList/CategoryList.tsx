@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { ProductQueryParams, ProductSortBy, ProductStatus, IProductModel } from '@app/domain/ProductModel';
 import { doGetAllProducts } from '@app/store/slices/productSlice';
 import { ICategoryModel } from '@app/domain/CategoryModel';
-import { doGetAllCategories } from '@app/store/slices/categorySlice';
+import { doDeleteCategory, doGetAllCategories } from '@app/store/slices/categorySlice';
 
 export const CategoryList: React.FC = () => {
   const categories = useAppSelector((state) => state?.category?.categories);
@@ -46,7 +46,7 @@ export const CategoryList: React.FC = () => {
 
   const handelEditUser = (id: string) => {
     const path = `${
-      RouterPaths.PATH + RouterPaths.USER_MANAGEMENT + RouterPaths.PATH + RouterPaths.EDIT.replace(':id', id)
+      RouterPaths.PATH + RouterPaths.CATEGORY_MANAGEMENT + RouterPaths.PATH + RouterPaths.EDIT.replace(':id', id)
     }`;
     navigate(path);
   };
@@ -74,7 +74,7 @@ export const CategoryList: React.FC = () => {
     });
   }, [categories]);
 
-  const showConfirm = (id: string) => {
+  const showConfirm = (category: ICategoryModel) => {
     confirm({
       title: 'Xóa danh mục',
       icon: <ExclamationCircleOutlined />,
@@ -83,20 +83,27 @@ export const CategoryList: React.FC = () => {
       cancelText: 'Hủy',
       centered: true,
       onOk: () => {
-        handleDeleteRow(id);
+        handleDeleteRow(category);
       },
     });
   };
 
-  const handleDeleteRow = (id: string) => {
-    // dispatch(doDeleteBenefit(id))
-    //   .unwrap()
-    //   .then(() => {
-    //     notificationController.success({ message: t('common.successfully') });
-    //   })
-    //   .catch((err: any) => {
-    //     notificationController.error({ message: err.message });
-    //   });
+  const handleDeleteRow = (category: ICategoryModel) => {
+    if (category.numberOfProducts > 0) {
+      notificationController.error({ message: 'Không thể xóa danh mục vẫn đang có sản phẩm !' });
+      return;
+    }
+
+    console.log('CATEGORY ID HERE:', category.id);
+
+    dispatch(doDeleteCategory({ id: category.id }))
+      .unwrap()
+      .then(() => {
+        notificationController.success({ message: 'Xóa danh mục thành công' });
+      })
+      .catch((err: any) => {
+        notificationController.error({ message: err.message });
+      });
   };
 
   const columns: ColumnsType<ICategoryModel> = [
@@ -135,7 +142,7 @@ export const CategoryList: React.FC = () => {
           <Space>
             <S.ButtonSection>
               <EditOutlined className="edit-icon" onClick={() => handelEditUser(record.id)} />
-              <DeleteOutlined className="delete-icon" onClick={() => showConfirm(record.id)} />
+              <DeleteOutlined className="delete-icon" onClick={() => showConfirm(record)} />
             </S.ButtonSection>
           </Space>
         );
@@ -153,7 +160,7 @@ export const CategoryList: React.FC = () => {
             htmlType="default"
             title={t('common.createNew')}
             onClick={() => {
-              navigate(`${RouterPaths.PATH + RouterPaths.USER_MANAGEMENT + RouterPaths.PATH + RouterPaths.CREATE}`);
+              navigate(`${RouterPaths.PATH + RouterPaths.CATEGORY_MANAGEMENT + RouterPaths.PATH + RouterPaths.CREATE}`);
             }}
           />
         </Col>

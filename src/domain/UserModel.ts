@@ -12,6 +12,8 @@ export interface IUserModel {
   phone?: string;
   dateHired?: string;
   nationalID?: string;
+  address?: string;
+  employeePassword?: string;
 }
 
 export interface IGroupModel {
@@ -54,6 +56,16 @@ export interface UpdateUserRequestModel {
 
 export interface UpdateUserRequestParams extends UpdateUserRequestModel {
   id: string;
+}
+
+export interface UpdateUserStatusRequest {
+  id: string;
+  status: boolean;
+}
+
+export interface UpdateUserStatusResponse {
+  id: string;
+  isSuccess: boolean;
 }
 
 export interface CreateUserResponseModel {
@@ -100,4 +112,13 @@ export interface ChangePasswordResponse {
 export interface ChangePasswordRequest {
   newPassword: string;
   oldPassword: string;
+}
+
+export interface DeleteUserResponse {
+  isSuccess: boolean;
+}
+
+export interface UpdateEmployeeResponse {
+  id: string;
+  isSuccess: boolean;
 }

@@ -1,15 +1,24 @@
 import { createAction, createAsyncThunk, createSlice, current, PrepareAction } from '@reduxjs/toolkit';
-import { changePassword, createUser, getAllEmployee, getAllUsers, getUserById, updateUser } from '@app/api/user.api';
+import {
+  changePassword,
+  createEmployee,
+  createUser,
+  deleteEmployeeById,
+  getAllEmployee,
+  getAllUsers,
+  getUserById,
+  updateEmployee,
+  updateUserStatus,
+} from '@app/api/user.api';
 import { GroupUserEnum } from '@app/constants/enums/groupUser';
 import { mergeAndDistinct } from '@app/utils/utils';
 import {
   IUserModel,
   CreateUserRequestModel,
-  UpdateUserRequestParams,
-  UpdateUserRequestModel,
   ChangePasswordRequest,
+  UpdateUserStatusRequest,
 } from '@app/domain/UserModel';
-import { BasePaginationRequest } from '@app/domain/ApiModel';
+import { CreateEmployeeRequest, UpdateEmployeeRequest } from '@app/domain/EmployeeModel';
 
 export interface UserState {
   users: IUserModel[] | [];
@@ -48,39 +57,46 @@ export const doCreateUser = createAsyncThunk('user/doCreateUser', async (params:
   });
 });
 
+export const doCreateEmployee = createAsyncThunk('user/doCreateEmployee', async (params: CreateEmployeeRequest) => {
+  return createEmployee(params).then((res) => {
+    return res.data;
+  });
+});
+
 export const doUpdateStatusUser = createAsyncThunk(
   'user/doUpdateStatusUser',
-  async (value: UpdateUserRequestParams) => {
-    const requestParams: UpdateUserRequestModel = {
-      enabled: value.enabled,
-    };
-
-    return updateUser(requestParams, value.id).then((res) => {
-      updateUserSlice(res.data);
-
-      return res;
+  async (value: UpdateUserStatusRequest) => {
+    return updateUserStatus(value).then((res) => {
+      return res.data;
     });
   },
 );
 
-export const doUpdateUser = createAsyncThunk('user/doUpdateUser', async (value: UpdateUserRequestParams) => {
-  const requestParams: UpdateUserRequestModel = {
-    enabled: value.enabled,
-    password: value.password,
-    groupName: value.groupName,
-  };
-
-  return updateUser(requestParams, value.id).then((res) => {
-    updateUserSlice(res.data);
-
-    return res;
+export const doUpdateEmployee = createAsyncThunk('employee/doUpdateEmployee', async (params: UpdateEmployeeRequest) => {
+  return updateEmployee(params).then((res) => {
+    return res.data;
   });
 });
 
 export const doGetUserById = createAsyncThunk('user/doGetUserById', async (id: string) => {
   return getUserById(id).then((response) => {
-    return response.data;
+    return response;
   });
+});
+
+export const doDeleteEmployee = createAsyncThunk('employee/doDeleteEmployee', async ({ id }: { id: string }) => {
+  return deleteEmployeeById(id).then((res) => {
+    if (res.data.isSuccess) {
+      deleteEmployee(id);
+    }
+    return id;
+  });
+});
+
+export const deleteEmployee = createAction<PrepareAction<string>>('employee/deleteEmployee', (deletedEmployeeId) => {
+  return {
+    payload: deletedEmployeeId,
+  };
 });
 
 export const setUsers = createAction<PrepareAction<IUserModel[]>>('user/setUser', (newUser) => {
@@ -122,18 +138,15 @@ export const usersSlice = createSlice({
       .addCase(doGetAllEmployee.fulfilled, (state, action) => {
         state.employee = action.payload;
       })
-      .addCase(doUpdateStatusUser.fulfilled, (state, action) => {
-        const stateData = [...current(state.users)];
-        const user = action.payload.data.user;
-        const isFound = stateData.findIndex((e) => e.id === user.id);
+      .addCase(doDeleteEmployee.fulfilled, (state, action) => {
+        const id = action.payload;
+        const index = state.employee.findIndex((product) => product.id === id);
 
-        if (isFound != -1) {
-          const temp = { ...stateData[isFound] };
-          temp.status = user.status;
-          stateData[isFound] = temp;
+        if (index !== -1) {
+          const updatedemployee = [...state.employee.slice(0, index), ...state.employee.slice(index + 1)];
+
+          state.employee = updatedemployee;
         }
-
-        state.users = stateData;
       });
   },
 });

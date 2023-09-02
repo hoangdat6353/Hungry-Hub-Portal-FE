@@ -25,6 +25,13 @@ export const Space = styled.div`
   margin: 1rem 0;
 `;
 
+export const ImageWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+`;
+
 export const ScrollWrapper = styled.div`
   overflow-y: auto;
   overflow-x: hidden;

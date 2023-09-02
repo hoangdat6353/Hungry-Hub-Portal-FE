@@ -11,14 +11,20 @@ import { RecentActivity } from '@app/components/nft-dashboard/recentActivity/Rec
 import * as S from './DashboardPage.styles';
 import { BaseRow } from '@app/components/common/BaseRow/BaseRow';
 import { BaseCol } from '@app/components/common/BaseCol/BaseCol';
+import image from 'assets/hungryhub-dashboard.png';
 
 const MedicalDashboardPage: React.FC = () => {
   const { isDesktop } = useResponsive();
-
   const desktopLayout = (
     <BaseRow>
       <S.LeftSideCol xl={16} xxl={17} id="desktop-content">
         <BaseRow gutter={[60, 60]}>
+          <BaseCol span={24}>
+            <S.ImageWrapper>
+              <img width={649} height={653} src={image} alt={'Hungry Hub Dashboard'} />
+            </S.ImageWrapper>
+          </BaseCol>
+
           {/* <BaseCol span={24}>
             <TrendingCreators />
           </BaseCol>
@@ -72,7 +78,7 @@ const MedicalDashboardPage: React.FC = () => {
   return (
     <>
       <PageTitle>Hungry Hub Dashboard</PageTitle>
-      {isDesktop ? desktopLayout : mobileAndTabletLayout}
+      {desktopLayout}
     </>
   );
 };
